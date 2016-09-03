@@ -5,7 +5,7 @@ function OmrQuestStoreService($q, $timeout, translationService) {
 
     var $$quests = [
         {
-            id: 1,
+            id: '1ba6fc3409118d229875336a5e518f0d',
             title: {
                 'PT_BR': 'Feiticeiro da montanha de fogo',
                 'EN_US': 'The wizard of the mountain of fire'
@@ -27,7 +27,7 @@ function OmrQuestStoreService($q, $timeout, translationService) {
                         title: q.title[currentTranslation.$NAME]
                     };
                 }));
-            }, 3000);
+            }, 1500);
 
             return d.promise;
         }

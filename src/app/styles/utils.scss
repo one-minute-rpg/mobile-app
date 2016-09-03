@@ -28,6 +28,7 @@
     font-size: 20px;
     color: $color-white-1;
     margin-bottom: 10px;
+    font-family: $font-default;
 
     &:active {
         background-color: darken($color-dark-golden, 30%);

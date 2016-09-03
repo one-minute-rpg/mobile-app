@@ -15,3 +15,12 @@
     -o-background-size: cover;
     background-size: cover;
 }
+
+@mixin icon-svg($height, $width, $path) {
+    &:before {
+        content: url($path);
+        display: inline-block;
+        width: $height;
+        height: $width;
+    }
+}

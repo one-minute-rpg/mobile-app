@@ -4,7 +4,7 @@ function HomeIndexController($timeout, platformService, splashScreenService, sou
     self.ready = false;
 
     self.playTest = function () {
-        stateService.goToPlay(1);
+        stateService.goHomeStore();
     };
 
     self.$onInit = function() {

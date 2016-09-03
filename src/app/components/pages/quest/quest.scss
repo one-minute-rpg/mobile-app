@@ -5,6 +5,56 @@
     height: 100%;
     width: 100%;
 
+    .omr-page-quest__scene {
+        overflow-y: scroll;
+        height: 100%;
+        padding-bottom: 80px;
+
+        .omr-page-quest__scene--title {
+            text-align: center;
+            padding-top: 3vh;
+
+            h2 {
+                color: $color-brown-1;
+            }
+        }
+
+        .omr-page-quest__scene--text {
+            color: $color_white_1;
+            font-family: $font-paragraph;
+            padding: 3vh;
+            text-align: justify;
+            text-justify: inter-word;
+            min-height: 25vh;
+        }
+
+        .omr-page-quest__scene__actions {
+            text-align: center;
+            padding: 5vh;
+
+            .omr-page-quest__scene__actions__action {
+                position: relative;
+                margin-bottom: 3vh;
+
+                .omr-page-quest__scene__actions__action--icon {
+                    height: 30px;
+                    width: 30px;
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    fill: $color-brown-1;
+
+                    .omr-icon {
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+                
+            }
+        }
+    }
+
     .omr-page-quest__quest-bar {
         position: absolute;
         bottom: 0;
@@ -12,9 +62,6 @@
         width: 100%;
         height: 60px;
         background-color: $color-black-1;
-
-
-
 
         .omr-page-quest__quest-bar__item {
             position: relative;
@@ -24,8 +71,9 @@
             padding-top: 5px;
             text-align: center;
 
-            .omr-page-quest__quest-bar__item--icon {
+            .omr-icon {
                 height: 70%;
+                fill: $color-white-1;
             }
 
             .omr-page-quest__quest-bar__item--text {

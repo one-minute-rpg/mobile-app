@@ -102,11 +102,27 @@ angular.module('omr').factory('platformService', ['ENVIRONMENT', PlatformService
 /**
  * Created by ben-hur on 15/08/2016.
  */
+function OmrQuestService($http, $q, $timeout, translationService) {
+    return {
+        getQuest: function (questId) {
+            return $http.get('resources/$quests/' + questId + '/' + questId + '.json')
+                .then(function(questData){
+                    return questData.data;
+                });
+        }
+    }
+}
+
+angular.module('omr').factory('questService', ['$http', '$q', '$timeout', 'translationService', OmrQuestService]);
+
+/**
+ * Created by ben-hur on 15/08/2016.
+ */
 function OmrQuestStoreService($q, $timeout, translationService) {
 
     var $$quests = [
         {
-            id: 1,
+            id: '1ba6fc3409118d229875336a5e518f0d',
             title: {
                 'PT_BR': 'Feiticeiro da montanha de fogo',
                 'EN_US': 'The wizard of the mountain of fire'
@@ -128,7 +144,7 @@ function OmrQuestStoreService($q, $timeout, translationService) {
                         title: q.title[currentTranslation.$NAME]
                     };
                 }));
-            }, 3000);
+            }, 1500);
 
             return d.promise;
         }
@@ -330,18 +346,165 @@ angular.module('omr').component('home', {
     controller: ['$timeout','platformService', 'splashScreenService', 'soundService', 'SOUNDS', HomePageController]
 });
 
-function QuestPageController($timeout, platformService, loaderService, soundService, SOUNDS) {
+function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService) {
     var self = this;
 
+    self.character = {
+    }
+
+    self.currentScene = {
+        title: '',
+        text: ''
+    }
+
     self.goHome = _goHome;
-
-
+    self.TRANSLATIONS = {};
+    self.onChoseAction = _onChoseAction;
     self.$onInit = _init;
+
+    var _quest = {};
 
     function _init() {
         platformService.onReady(function () {
-            loaderService.hide();
+            self.TRANSLATIONS = translationService.getCurrentTranslations();
+            _loadQuest();
         });
+    }
+
+    function _loadQuest() {
+        questService.getQuest($stateParams.questId)
+            .then(function(questData) {
+                _quest = questData;
+                _loadCharacter();
+                _loadScene();
+                loaderService.hide();
+            });
+    }
+
+    /************************
+     * SCENE
+     ************************/
+
+    function _loadScene() {
+        var currentSceneId = $location.search().sceneId || 1;
+        var sceneData = _getScene(Number(currentSceneId));
+        _bindScene(sceneData);
+    }
+
+    function _bindScene(scene) {
+        var currentTranslationKey = self.TRANSLATIONS.$NAME;
+        self.currentScene = _formatScene(scene);
+    }
+
+    function _formatScene(scene) {
+        var currentTranslationKey = self.TRANSLATIONS.$NAME;
+        var formattedScene = {
+            title: scene.title[currentTranslationKey],
+            text: scene.text[currentTranslationKey],
+            actions: _getActions(scene)
+        };
+
+        return formattedScene;
+    }
+
+    function _getActions(scene) {
+        var currentTranslationKey = self.TRANSLATIONS.$NAME;
+        return scene.actions
+            .filter(_filterRequireAttributeAction)
+            .filter(_filterRequireItemAction)
+            .map(function(act) {
+                var formattedAction = angular.copy(act);
+                formattedAction.text = act.text[currentTranslationKey];
+                formattedAction._icon = _getActionIcon(act);
+                return formattedAction;
+            });
+    }
+
+    function _filterRequireAttributeAction(action) {
+        if(action.require_attribute_value) {
+            for (var attr in action.require_attribute_value) {
+                if(self.character.attributes[attr].current < action.require_attribute_value[attr]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    function _filterRequireItemAction(action) {
+        var showAction = true;
+
+        if(action.require_item_ids.length) {
+            action.require_item_ids.forEach(function(itemId) {
+                var notFound = self.character.itens.filter(function(i){
+                    return i.item_id == itemId && i.quantity > 0;
+                }).length == 0;
+
+                if(notFound) {
+                    showAction = false;
+                }
+            });
+        }
+
+        return showAction;
+    }
+
+    function _getActionIcon(action) {
+        if(action.require_item_ids.length) {
+            return 'ITEM';
+        }
+
+        return 'MAP';
+    }
+
+    function _getScene(sceneId) {
+        var scene = _quest.scenes.filter(function(s) {
+            return s.scene_id === sceneId;
+        })[0];
+
+        return scene;
+    }
+
+    /************************
+     * CHARACTER
+     ************************/
+
+    function _loadCharacter() {
+        self.character = angular.copy(_quest.character);
+    }
+
+
+
+
+    /************************
+     * ACTIONS
+     ************************/
+
+    function _onChoseAction(action) {
+        var events = action.events;
+
+        events.forEach(function(e) {
+            if(e.event_type === 'CHANGE_ATTRIBUTE') {
+                _changeAttribute(e.attribute, e.value);
+            }
+            else if(e.event_type === 'GO_TO_SCENE') {
+                _goToScene(e.scene_id);
+            }
+        });
+    }
+
+    function _goToScene(sceneId) {
+        $location.search({sceneId: sceneId});
+        _loadScene();
+    }
+
+    function _changeAttribute(attribute, value) {
+        self.character.attributes[attribute].current += value;
+
+        if(self.character.attributes[attribute].current > self.character.attributes[attribute].max) {
+            self.character.attributes[attribute].current = self.character.attributes[attribute].max;
+        }
     }
 
     function _goHome() {
@@ -351,7 +514,17 @@ function QuestPageController($timeout, platformService, loaderService, soundServ
 
 angular.module('omr').component('quest', {
     templateUrl: 'components/pages/quest/quest.html',
-    controller: ['$timeout','platformService', 'loaderService', 'soundService', 'SOUNDS', QuestPageController]
+    controller: [
+        '$stateParams', 
+        '$timeout',
+        '$location',
+        'platformService', 
+        'loaderService',
+        'soundService',
+        'SOUNDS',
+        'questService',
+        'translationService',
+        QuestPageController]
 });
 
 function ActionBarController($scope, $timeout, platformService, $ionicModal) {
@@ -370,27 +543,6 @@ angular.module('omr').component('omrActionBar', {
         home: '=',
         audio: '=',
         store: '='
-    }
-});
-
-/**
- * Created by ben-hur on 21/08/2016.
- */
-function OmrBackButtonController($) {
-    var self = this;
-
-    self.__onClick = function () {
-        if(!!self.onClick) {
-            self.onClick();
-        }
-    }
-}
-
-angular.module('omr').component('omrBackButton', {
-    templateUrl: 'components/shared/back-button/back-button.html',
-    controller: [OmrBackButtonController],
-    bindings: {
-        onClick: '&'
     }
 });
 
@@ -493,6 +645,27 @@ angular.module('omr').component('omrConfigurations', {
         'EVENTS',
         OmrConfigurationsController],
     bindings: {
+    }
+});
+
+/**
+ * Created by ben-hur on 21/08/2016.
+ */
+function OmrBackButtonController($) {
+    var self = this;
+
+    self.__onClick = function () {
+        if(!!self.onClick) {
+            self.onClick();
+        }
+    }
+}
+
+angular.module('omr').component('omrBackButton', {
+    templateUrl: 'components/shared/back-button/back-button.html',
+    controller: [OmrBackButtonController],
+    bindings: {
+        onClick: '&'
     }
 });
 
@@ -704,32 +877,13 @@ angular.module('omr').component('omrSound', {
     }
 });
 
-/**
- * Created by ben-hur on 14/08/2016.
- */
-function OmrStoreController(stateService) {
-    var self = this;
-
-    self.goStore = function () {
-        stateService.goHomeStore();
-    }
-}
-
-
-angular.module('omr').component('omrStore', {
-    templateUrl: 'components/shared/store/store.html',
-    controller: ['stateService', OmrStoreController],
-    bindings: {
-    }
-});
-
 function HomeIndexController($timeout, platformService, splashScreenService, soundService, SOUNDS, translationService, stateService) {
     var self = this;
 
     self.ready = false;
 
     self.playTest = function () {
-        stateService.goToPlay(1);
+        stateService.goHomeStore();
     };
 
     self.$onInit = function() {
@@ -761,7 +915,15 @@ function HomeStoreController(translationService, stateService, questStoreService
     self.downloadedQuests = [];
     self.loadingQuests = false;
 
-    self.loadQuests = function () {
+    self.loadQuests = _loadQuests;
+    self.play = _play;
+    self.$onInit = _init;
+
+    function _play(quest) {
+        stateService.goToPlay(quest.id);
+    }
+
+    function _loadQuests() {
         self.loadingQuests = true;
 
         questStoreService.getDownloadedQuests()
@@ -769,13 +931,12 @@ function HomeStoreController(translationService, stateService, questStoreService
                 self.downloadedQuests = quests;
                 self.loadingQuests = false;
             });
-    };
+    }
 
-    self.$onInit = function () {
+    function _init() {
         self.TRANSLATIONS = translationService.getCurrentTranslations();
-
         self.loadQuests();
-    };
+    }
 }
 
 angular.module('omr').component('homeStore', {

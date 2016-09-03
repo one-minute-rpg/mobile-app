@@ -8,6 +8,7 @@ var rename = require('gulp-rename');
 var sh = require('shelljs');
 var babel = require('gulp-babel');
 var del = require('del');
+var ejs = require("gulp-ejs");
 
 var paths = {
     sass: [
@@ -30,8 +31,8 @@ var paths = {
     vendorPack: [
         './app/lib/rpg-awesome/**/*.*'
     ],
-    html: [
-        './app/**/*.html'
+    ejs: [
+        './app/**/*.ejs'
     ],
     resources: [
         './app/resources/**/*.*'
@@ -41,7 +42,7 @@ var paths = {
 var watch = {
     sass: ['./app/**/*.scss'],
     js: paths.js,
-    html: ['./app/**/*.html']
+    ejs: ['./app/**/*.ejs']
 };
 
 
@@ -82,8 +83,11 @@ gulp.task('vendor:pack', function (done) {
         .pipe(gulp.dest('./www/vendor-pack'));
 });
 
-gulp.task('html', function () {
-    gulp.src(paths.html)
+gulp.task('ejs', function () {
+    gulp.src(paths.ejs)
+        .pipe(ejs(
+            { msg: 'Hello Gulp!' }, { ext: '.html' })
+        .on('error', gutil.log))
         .pipe(gulp.dest('./www'));
 });
 
@@ -95,10 +99,10 @@ gulp.task('resources', function () {
 gulp.task('watch', function () {
     gulp.watch(watch.sass, ['sass']);
     gulp.watch(watch.js, ['js']);
-    gulp.watch(watch.html, ['html']);
+    gulp.watch(watch.ejs, ['ejs']);
 });
 
-gulp.task('build', ['sass', 'js', 'html', 'vendor:js', 'vendor:css', 'vendor:pack', 'resources'], function(done) {
+gulp.task('build', ['sass', 'js', 'ejs', 'vendor:js', 'vendor:css', 'vendor:pack', 'resources'], function (done) {
     done();
 })
 

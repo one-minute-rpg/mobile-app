@@ -8,7 +8,15 @@ function HomeStoreController(translationService, stateService, questStoreService
     self.downloadedQuests = [];
     self.loadingQuests = false;
 
-    self.loadQuests = function () {
+    self.loadQuests = _loadQuests;
+    self.play = _play;
+    self.$onInit = _init;
+
+    function _play(quest) {
+        stateService.goToPlay(quest.id);
+    }
+
+    function _loadQuests() {
         self.loadingQuests = true;
 
         questStoreService.getDownloadedQuests()
@@ -16,13 +24,12 @@ function HomeStoreController(translationService, stateService, questStoreService
                 self.downloadedQuests = quests;
                 self.loadingQuests = false;
             });
-    };
+    }
 
-    self.$onInit = function () {
+    function _init() {
         self.TRANSLATIONS = translationService.getCurrentTranslations();
-
         self.loadQuests();
-    };
+    }
 }
 
 angular.module('omr').component('homeStore', {

@@ -17,3 +17,8 @@ video {
 
 @import 'styles/_override-ionic';
 @import "styles/_fonts";
+
+
+h1, h2, h3, h4 {
+	font-family: $font-default;
+}

@@ -1,5 +1,7 @@
+@import './app/styles/_values';
+
 .omr-action-bar {
-    background-color: #000;
+    background-color: $color-black-1;
     height: 50px;
     width: 100%;
     position: absolute;
@@ -15,8 +17,8 @@
             float: right;
             width: 45px;
             padding: 5px;
-            color: #fff;
             font-size: 10px;
+            fill: $color-white-1;
 
             svg {
                 width: 100%;

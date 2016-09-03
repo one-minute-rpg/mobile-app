@@ -1,0 +1,9 @@
+<div class="clickable" ng-click="$ctrl.toggleSound()">
+    <div ng-show="!$ctrl.soundIsEnabled">
+        <% include ../icons/sound-off.ejs %>
+    </div>
+    <div ng-show="$ctrl.soundIsEnabled">
+        <% include ../icons/sound-on.ejs %>
+    </div>
+    <audio src="resources/soundtrack/main.mp3" id="omr-sound-main" loop></audio>
+</div>

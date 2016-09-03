@@ -1,0 +1,197 @@
+{
+    "quest_id": "1ba6fc3409118d229875336a5e518f0d",
+    "title": {
+        "PT_BR": "O reino de Alaban",
+        "EN_US": "..."
+    },
+    "character": {
+        "character_id": 1,
+        "itens": [
+            {
+                "item_id": 2,
+                "quantity": 1
+            }
+        ],
+        "attributes": {
+            "health": {
+                "max": 10,
+                "current": 10
+            },
+            "strength": {
+                "current": 80
+            },
+            "agility": {
+                "current": 30
+            },
+            "intelligence": {
+                "current": 30
+            }
+        }
+    },
+    "itens": [
+        {
+            "item_id": 1,
+            "type": "INVENTORY",
+            "name": {
+                "PT_BR": "Poção de Cura",
+                "EN_US": "..."
+            },
+            "text": {
+                "PT_BR": "Cura 5 pontos de vida",
+                "EN_US": "..."
+            },
+            "events": [
+                {
+                    "event_type": "CHANGE_ATTRIBUTE",
+                    "text": {
+                        "PT_BR": "Você recuperou 5 pontos de vida",
+                        "EN_US": "..."
+                    },
+                    "attribute": "health",
+                    "value": 5
+                },
+                {
+                    "event_type": "REMOVE_ITEM",
+                    "text": {
+                        "PT_BR": null,
+                        "EN_US": null
+                    },
+                    "item_id": 1,
+                    "quantity": 1
+                }
+            ]
+        },
+        {
+            "item_id": 2,
+            "type": "QUEST",
+            "name": {
+                "PT_BR": "Poção Mágica",
+                "EN_US": "..."
+            },
+            "text": {
+                "PT_BR": "Uma poção misteriosa",
+                "EN_US": "..."
+            },
+            "events": []
+        }
+    ],
+    "creatures": [
+        {
+            "creature_id": 1,
+            "name": {
+                "PT_BR": "Morto-Vivo",
+                "EN_US": "..."
+            },
+            "level": 1,
+            "attributes": {
+                "health": {
+                    "current": 10
+                },
+                "strength": {
+                    "current": 30
+                },
+                "agility": {
+                    "current": 10
+                },
+                "intelligence": {
+                    "current": 10
+                }
+            }
+        }
+    ],
+    "scenes": [
+        {
+            "scene_id": 1,
+            "type": "DECISION",
+            "title": {
+                "PT_BR": "O calabolso",
+                "EN_US": "..."
+            },
+            "text": {
+                "PT_BR": "Você está diante de um calabolso antigo, na entrada dos fundos do castelo...",
+                "EN_US": "..."
+            },
+            "actions": [
+                {
+                    "action_id": 1,
+                    "text": {
+                        "PT_BR": "Continuar no corredor",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "event_type": "CHANGE_ATTRIBUTE",
+                            "text": {
+                                "PT_BR": "Você recuperou 5 pontos de vida",
+                                "EN_US": "..."
+                            },
+                            "attribute": "health",
+                            "value": 5
+                        },
+                        {
+                            "event_type": "GO_TO_SCENE",
+                            "scene_id": 2
+                        }
+                    ]
+                },
+                {
+                    "action_id": 2,
+                    "text": {
+                        "PT_BR": "Pisar nos Espinhos",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "event_type": "CHANGE_ATTRIBUTE",
+                            "text": {
+                                "PT_BR": "Você perdeu 7 pontos de vida",
+                                "EN_US": "..."
+                            },
+                            "attribute": "health",
+                            "value": -7
+                        }
+                    ]
+                },
+                {
+                    "action_id": 3,
+                    "text": {
+                        "PT_BR": "Forçar Porta",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [],
+                    "require_attribute_value": {
+                        "strength": 60
+                    },
+                    "events": []
+                },
+                {
+                    "action_id": 2,
+                    "text": {
+                        "PT_BR": "Usar poção mágica",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [2],
+                    "require_attribute_value": null,
+                    "events": []
+                }
+            ]
+        },
+        {
+            "scene_id": 2,
+            "type": "DECISION",
+            "title": {
+                "PT_BR": "O castelo",
+                "EN_US": "..."
+            },
+            "text": {
+                "PT_BR": "Você entrou no castelo sombrio...",
+                "EN_US": "..."
+            },
+            "actions": []
+        }
+    ]
+}

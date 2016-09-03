@@ -1,0 +1,55 @@
+<div class="omr-page-quest omr-background">
+
+    <omr-page-header
+        can-go-back="true"
+        go-back-handler="$ctrl.goHome()"></omr-page-header>
+
+    <div class="omr-page-quest__scene">
+        <div class="omr-page-quest__scene--title">
+            <h2>{{ $ctrl.currentScene.title }}</h2>
+        </div>
+        <div class="omr-page-quest__scene--text">
+            <p>
+                {{ $ctrl.currentScene.text }}
+            </p>
+        </div>
+        <div class="omr-page-quest__scene__actions">
+            <button ng-repeat="act in $ctrl.currentScene.actions"
+                    ng-click="$ctrl.onChoseAction(act)"
+                    class="omr-button omr-page-quest__scene__actions__action"
+                    >
+                <span class="omr-page-quest__scene__actions__action--icon" ng-if="act._icon === 'MAP'">
+                    <% include ../../shared/icons/treasure-map.ejs %>
+                </span>
+                <span class="omr-page-quest__scene__actions__action--icon" ng-if="act._icon === 'ITEM'">
+                    <% include ../../shared/icons/potion.ejs %>
+                </span>
+                {{ act.text }}
+            </button>
+        </div>
+    </div>
+
+    <div class="omr-page-quest__quest-bar">
+        <div class="omr-border"></div>
+        <div class="omr-page-quest__quest-bar__item">
+            <omr-configurations></omr-configurations>
+            <span class="omr-page-quest__quest-bar__item--text">Config</span>
+        </div>
+        <div class="omr-page-quest__quest-bar__item">
+            <% include ../../shared/icons/heart.ejs %>
+            <span class="omr-page-quest__quest-bar__item--text">
+                {{$ctrl.character.attributes.health.current}}/{{$ctrl.character.attributes.health.max}}
+            </span>
+        </div>
+        <div class="omr-page-quest__quest-bar__item">
+            <% include ../../shared/icons/potion.ejs %>
+            <span class="omr-page-quest__quest-bar__item--text">Itens</span>
+        </div>
+        <div class="omr-page-quest__quest-bar__item">
+            <% include ../../shared/icons/armor.ejs %>
+            <span class="omr-page-quest__quest-bar__item--text">Status</span>
+        </div>
+    </div>
+
+    <omr-loader></omr-loader>
+</div>
