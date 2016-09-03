@@ -1,0 +1,32 @@
+@import './app/styles/_values';
+
+.omr-modal-header {
+    background-color: #000;
+    width: 100%;
+
+    .omr-modal-header--close-icon {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        height: 40px;
+        width: 40px;
+    }
+
+    .omr-modal-header--title {
+        color: #fff;
+        height: $modal-header-height;
+        font-size: 20px;
+        padding-top: 15px;
+    }
+}
+
+.omr-modal-content {
+    position: absolute;
+    padding: 15px;
+    left: 0;
+    top: $modal-header-height + $border-height;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    color: #fff;
+}

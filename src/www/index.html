@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>One Minute RPG</title>
+
+    <link rel="stylesheet" href="css/vendor.bundle.css">
+    <link rel="stylesheet" href="css/app.bundle.min.css">
+
+    <script src="js/vendor.bundle.js"></script>
+
+    <script src="cordova.js"></script>
+
+    <script src="app.bundle.js"></script>
+  </head>
+  <body ng-app="omr">
+    <div class="omr-main" ng-controller="MainCtrl">
+        <div ui-view class="height-100"></div>
+    </div>
+  </body>
+</html>

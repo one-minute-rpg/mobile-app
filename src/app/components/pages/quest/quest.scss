@@ -1,0 +1,46 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-page-quest {
+    height: 100%;
+    width: 100%;
+
+    .omr-page-quest__quest-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: $color-black-1;
+
+
+
+
+        .omr-page-quest__quest-bar__item {
+            position: relative;
+            float: left;
+            height: 100%;
+            width: 25%;
+            padding-top: 5px;
+            text-align: center;
+
+            .omr-page-quest__quest-bar__item--icon {
+                height: 70%;
+            }
+
+            .omr-page-quest__quest-bar__item--text {
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                left: 0;
+                bottom: 0;
+                color: #fff;
+                background-color: rgba(0,0,0,0.3);
+            }
+
+            omr-configurations svg{
+                height: 70%;
+            }
+        }
+    }
+}

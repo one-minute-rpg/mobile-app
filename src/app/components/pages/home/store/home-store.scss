@@ -1,0 +1,33 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-page-home__store {
+    .omr-page-home__store__quests {
+        margin: 15px 10px;
+
+        .omr-page-home__store__quests__quest {
+            position: relative;
+            height: 60px;
+            width: 100%;
+
+            .omr-page-home__store__quests__quest--cover {
+                float: left;
+                width: 20%;
+                height: 100%;
+                overflow: hidden;
+                img {
+                    height: 100%;
+                }
+            }
+
+            .omr-page-home__store__quests__quest--title {
+                float: left;
+                color: $color-white-1;
+                padding: 5px;
+                font-size: 20px;
+                width: 75%;
+                height: 100%;
+            }
+        }
+    }
+}

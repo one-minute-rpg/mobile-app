@@ -1,0 +1,12 @@
+<div class="omr-page-home__logo text-center">
+    <img src="resources/img/logo.png" alt=""
+         ng-class="{'omr-fade-in': $ctrl.ready, 'omr-invisible': !$ctrl.ready }">
+</div>
+
+<div class="omr-page-home__action text-center">
+    <button class="omr-button"
+            ng-class="{'omr-fade-in': $ctrl.ready, 'omr-invisible': !$ctrl.ready }"
+            ng-click="$ctrl.playTest()">
+        {{::$ctrl.TRANSLATIONS.PLAY}}
+    </button>
+</div>
