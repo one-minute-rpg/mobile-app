@@ -132,6 +132,10 @@
                         },
                         {
                             "event_type": "GO_TO_SCENE",
+                            "text": {
+                                "PT_BR": "",
+                                "EN_US": "..."
+                            },
                             "scene_id": 2
                         }
                     ]
@@ -169,7 +173,7 @@
                     "events": []
                 },
                 {
-                    "action_id": 2,
+                    "action_id": 4,
                     "text": {
                         "PT_BR": "Usar poção mágica",
                         "EN_US": "..."
@@ -177,6 +181,64 @@
                     "require_item_ids": [2],
                     "require_attribute_value": null,
                     "events": []
+                },
+                {
+                    "action_id": 5,
+                    "text": {
+                        "PT_BR": "Ganhar Poção Mágica",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "event_type": "ADD_ITEM",
+                            "text": {
+                                "PT_BR": "Você ganhou uma nova poção.",
+                                "EN_US": "..."
+                            },
+                            "item_id": 1,
+                            "quantity": 2
+                        }
+                    ]
+                },
+                {
+                    "action_id": 6,
+                    "text": {
+                        "PT_BR": "Perder Poção Mágica",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [1],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "event_type": "REMOVE_ITEM",
+                            "text": {
+                                "PT_BR": "Você perdeu a nova poção.",
+                                "EN_US": "..."
+                            },
+                            "item_id": 1,
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "action_id": 7,
+                    "text": {
+                        "PT_BR": "Salvar Jogo",
+                        "EN_US": "..."
+                    },
+                    "require_item_ids": [0],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "event_type": "SAVE_GAME",
+                            "text": {
+                                "PT_BR": "Jogo salvo com sucesso.",
+                                "EN_US": "..."
+                            }
+                        }
+                    ]
                 }
             ]
         },

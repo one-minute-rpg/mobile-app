@@ -24,8 +24,31 @@
                 <span class="omr-page-quest__scene__actions__action--icon" ng-if="act._icon === 'ITEM'">
                     <% include ../../shared/icons/potion.ejs %>
                 </span>
+                <span class="omr-page-quest__scene__actions__action--icon" ng-if="act._icon === 'STATUS'">
+                    <% include ../../shared/icons/character.ejs %>
+                </span>
                 {{ act.text }}
             </button>
+        </div>
+    </div>
+
+    <div class="omr-page-quest__notifications animate-slide" ng-show="$ctrl.notifications.length">
+        <div class="omr-border"></div>
+        <div class="omr-page-quest__notifications__item" ng-repeat="n in $ctrl.notifications">
+            <div class="omr-page-quest__notifications__item--icon">
+                <div ng-if="n.type === 'ITEM'">
+                    <% include ../../shared/icons/locked-chest.ejs %>
+                </div>
+                <div ng-if="n.type === 'STATUS'">
+                    <% include ../../shared/icons/character-highlight.ejs %>
+                </div>
+                <div ng-if="n.type === 'ALERT'">
+                    <% include ../../shared/icons/warning.ejs %>
+                </div>
+            </div>
+            <span class="omr-page-quest__notifications__item--text">
+                {{n.text}}
+            </span>
         </div>
     </div>
 
@@ -46,7 +69,7 @@
             <span class="omr-page-quest__quest-bar__item--text">Itens</span>
         </div>
         <div class="omr-page-quest__quest-bar__item">
-            <% include ../../shared/icons/armor.ejs %>
+            <% include ../../shared/icons/character.ejs %>
             <span class="omr-page-quest__quest-bar__item--text">Status</span>
         </div>
     </div>
