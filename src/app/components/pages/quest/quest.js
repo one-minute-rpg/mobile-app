@@ -17,6 +17,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     self.$onInit = _init;
 
     var _quest = {};
+    var _questSelectedLanguage = 'PT_BR';
 
     function _init() {
         platformService.onReady(function () {
@@ -32,6 +33,18 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
                 _loadSavedGame();
                 loaderService.hide();
             });
+    }
+
+    function _configureSelectedLanguageForQuest() {
+        var currentTranslationKey = self.TRANSLATIONS.$NAME;
+        var questHasLanguage = _quest.availableLanguages.indexOf(currentTranslationKey) >= 0; 
+
+        if(questHasLanguage) {
+            _questSelectedLanguage = currentTranslationKey;
+        }
+        else {
+            _questSelectedLanguage = _quest.availableLanguages[0];
+        }
     }
 
     function _loadSavedGame() {
@@ -67,11 +80,10 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _formatScene(scene) {
-        var currentTranslationKey = self.TRANSLATIONS.$NAME;
         var formattedScene = {
             scene_id: scene.scene_id,
-            title: scene.title[currentTranslationKey],
-            text: scene.text[currentTranslationKey],
+            title: scene.title[_questSelectedLanguage],
+            text: scene.text[_questSelectedLanguage],
             actions: _getActions(scene)
         };
 
@@ -79,13 +91,12 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _getActions(scene) {
-        var currentTranslationKey = self.TRANSLATIONS.$NAME;
         return scene.actions
             .filter(_filterRequireAttributeAction)
             .filter(_filterRequireItemAction)
             .map(function (act) {
                 var formattedAction = angular.copy(act);
-                formattedAction.text = act.text[currentTranslationKey];
+                formattedAction.text = act.text[_questSelectedLanguage];
                 formattedAction._icon = _getActionIcon(act);
                 return formattedAction;
             });
@@ -159,25 +170,29 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     /************************
      * NOTIFICATIONS
      ************************/
+    var _lastNotificationTimer = null;
+
     function _showNotificationsForEvents(events) {
         if(!events || !events.length) return;
 
-        var currentTranslationKey = self.TRANSLATIONS.$NAME;
-
         var notifications = events
             .filter(function(e) {
-                return !!e.text[currentTranslationKey];
+                return !!e.text[_questSelectedLanguage];
             })
             .map(function(e){
                 return {
                     type: _getNotificationType(e),
-                    text: e.text[currentTranslationKey]
+                    text: e.text[_questSelectedLanguage]
                 };
             });
 
         self.notifications= notifications;
 
-        $timeout(function(){
+        if(_lastNotificationTimer) {
+            $timeout.cancel(_lastNotificationTimer);
+        }
+
+        _lastNotificationTimer = $timeout(function(){
             self.notifications = [];
         }, 2000);
     }
