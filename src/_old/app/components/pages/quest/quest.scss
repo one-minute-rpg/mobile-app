@@ -1,0 +1,198 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+$notifications-bottom: 60px;
+
+.omr-page-quest {
+    height: 100%;
+    width: 100%;
+
+    .omr-page-quest__scene {
+        overflow-y: scroll;
+        height: 100%;
+        padding-bottom: 80px;
+
+        .omr-page-quest__scene--title {
+            text-align: center;
+            padding-top: 3vh;
+
+            h2 {
+                color: $color-brown-1;
+            }
+        }
+
+        .omr-page-quest__scene--text {
+            color: $color_white_1;
+            font-family: $font-paragraph;
+            font-size: 16px;
+            padding: 3vh;
+            text-align: justify;
+            text-justify: inter-word;
+            min-height: 10vh;
+        }
+
+        .omr-page-quest__scene__actions {
+            text-align: center;
+            padding: 5vh;
+
+            .omr-page-quest__scene__actions__action {
+                position: relative;
+                margin-bottom: 3vh;
+
+                .omr-page-quest__scene__actions__action--icon {
+                    height: 30px;
+                    width: 30px;
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    fill: $color-brown-1;
+
+                    .omr-icon {
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+                
+            }
+        }
+    }
+
+    .omr-page-quest__notifications {
+        position: absolute;
+        left: 0;
+        bottom: $notifications-bottom;
+        width: 100%;
+        background-color: $color-black-1;
+        color: $color-white-1;
+        opacity: 0.9;
+
+        .omr-page-quest__notifications__item {
+            min-height: 40px;
+            position: relative;
+            border-bottom: 1px solid $color-gray-1;
+            padding-left: 50px;
+            padding-top: 7px;
+
+            .omr-page-quest__notifications__item--text {
+                position: relative;
+                font-size: 16px;
+            }
+
+            .omr-page-quest__notifications__item--icon {
+                position: absolute;
+                left: 10px;
+                top: 5px;
+
+                .omr-icon {
+                    height: 30px;
+                    width: 30px;
+                    fill: $color-white-1;
+                }
+            }
+        }
+    }
+
+    .omr-page-quest__quest-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        z-index: 100;
+        background-color: $color-black-1;
+
+        .omr-page-quest__quest-bar__item {
+            position: relative;
+            float: left;
+            height: 100%;
+            width: 25%;
+            padding-top: 5px;
+            text-align: center;
+
+            .omr-icon {
+                height: 70%;
+                fill: $color-white-1;
+            }
+
+            .omr-page-quest__quest-bar__item--text {
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                left: 0;
+                bottom: 0;
+                color: #fff;
+                background-color: rgba(0,0,0,0.3);
+            }
+
+            omr-configurations svg{
+                height: 70%;
+            }
+        }
+    }
+}
+
+
+
+/*
+ * NOTIFICATIONS ANIMATION
+ */
+
+.animate-slide {
+  position:absolute;
+  width: 100%;
+  -webkit-transform: translate3d(0,0,0); /* Chrome, Safari, Opera */
+  transform: translate3d(0,0,0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+.animate-slide.ng-hide-add,
+.animate-slide.ng-hide-remove {
+  display: block!important;
+}
+
+.animate-slide.ng-hide-remove.ng-hide-remove-active {
+  -webkit-animation:0.5s slide-up;
+  animation:0.5s slide-up;
+}
+
+.animate-slide.ng-hide-add.ng-hide-add-active {
+  -webkit-animation:0.5s slide-down;
+  animation:0.5s slide-down;
+}
+
+.animate-slide.ng-hide {
+  bottom:-$notifications-bottom;
+  display: block!important;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes slide-up
+{
+  0%   {bottom:-$notifications-bottom;}
+  100%  {bottom:$notifications-bottom;}
+}
+
+/* Standard syntax */
+@keyframes slide-up
+{
+  0%   {bottom:-$notifications-bottom;}
+  100%  {bottom:$notifications-bottom;}
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes slide-down
+{
+  0%  {bottom:$notifications-bottom;}
+  100%   {bottom:-$notifications-bottom;}
+}
+
+/* Standard syntax */
+@keyframes slide-down
+{
+  0%  {bottom:$notifications-bottom;}
+  100%   {bottom:-$notifications-bottom;}
+}

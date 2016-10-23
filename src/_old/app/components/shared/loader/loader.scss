@@ -1,0 +1,21 @@
+@import "./app/styles/_values";
+
+#omr-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($color-black-1, 0.7);
+    z-index: 999;
+
+    .omr-loader--icon {
+        margin-top: 70%;
+    }
+}
+
+.omr-inline-loader {
+    width: 100%;
+    height: 70px;
+    margin: 10px;
+}

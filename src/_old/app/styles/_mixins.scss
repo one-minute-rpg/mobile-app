@@ -1,0 +1,26 @@
+@mixin border-radius($radius: 5px) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin background-cover($image: false) {
+    @if($image) {
+        background: url($image) no-repeat center center fixed;
+    }
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+@mixin icon-svg($height, $width, $path) {
+    &:before {
+        content: url($path);
+        display: inline-block;
+        width: $height;
+        height: $width;
+    }
+}

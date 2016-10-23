@@ -1,0 +1,57 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-page-home__store {
+    .omr-page-home__store__quests {
+        margin: 15px 10px;
+
+        .omr-page-home__store__quests__quest {
+            position: relative;
+            height: 110px;
+            width: 100%;
+            border: 2px solid $color-brown-3;
+            @include border-radius(4px);
+            overflow: hidden;
+
+            .omr-page-home__store__quests__quest__content {
+                position: relative;
+                height: 60px;
+            }
+
+            .omr-page-home__store__quests__quest--cover {
+                float: left;
+                width: 20%;
+                height: 100%;
+                overflow: hidden;
+                img {
+                    height: 100%;
+                }
+            }
+
+            .omr-page-home__store__quests__quest--title {
+                float: left;
+                color: $color-white-1;
+                padding: 5px;
+                font-size: 20px;
+                width: 75%;
+                height: 100%;
+            }
+
+            .omr-page-home__store__quests__quest__actions {
+                position: relative;
+                width: 100%;
+                height: 100%;
+
+                button {
+                    height: 50px;
+                    width: 100%;
+                    font-size: 22px;
+                    background-color: $color-black-1;
+                    color: $color-dark-golden;
+                    border: none;
+                    border-top: 1px solid $color-brown-3;
+                }
+            }
+        }
+    }
+}

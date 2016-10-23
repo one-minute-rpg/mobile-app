@@ -1,0 +1,15 @@
+<div class="omr-page-header">
+    <omr-back-button ng-if="$ctrl.canGoBack"
+                     on-click="$ctrl.__onGoBack()"
+                     class="omr-page-header--back-icon"></omr-back-button>
+
+    <div class="omr-page-header--title text-center">
+        {{ ::$ctrl.title }}
+    </div>
+
+    <div class="omr-page-header__custom-actions text-right" ng-if="$ctrl.customActions.length">
+        <img ng-src="{{c.image}}" ng-click="$ctrl.callCustomAction(c)" alt="" ng-repeat="var c in $ctrl.customActions">
+    </div>
+
+    <div class="omr-border"></div>
+</div>

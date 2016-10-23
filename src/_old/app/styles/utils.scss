@@ -1,0 +1,44 @@
+@import "_values";
+@import "_mixins";
+
+.text-center {
+    text-align: center;
+}
+
+.omr-invisible {
+    opacity: 0;
+}
+
+.omr-border {
+    background-image: url(../resources/img/metalic-line.png);
+    height: 2px;
+    width: 100%;
+}
+
+.omr-background {
+    @include background-cover('../resources/img/background.png');
+}
+
+.omr-button {
+    background-color: $color-black-1;
+    border: 1px solid $color-dark-golden;
+    @include border-radius();
+    min-height: 50px;
+    width: 100%;
+    font-size: 20px;
+    color: $color-white-1;
+    margin-bottom: 10px;
+    font-family: $font-default;
+
+    &:active {
+        background-color: darken($color-dark-golden, 30%);
+    }
+}
+
+.height-100 {
+    height: 100%;
+}
+
+
+
+

@@ -1,0 +1,29 @@
+<div class="omr-page-home__store">
+    <omr-page-header
+        title="$ctrl.TRANSLATIONS.QUEST_STORE"
+        can-go-back="true"
+        go-back-handler="$ctrl.goHome()">
+    </omr-page-header>
+
+    <div class="omr-page-home__store__quests">
+        <div class="omr-page-home__store__quests__quest"
+             ng-repeat="quest in $ctrl.downloadedQuests track by quest.id"
+             >
+             <div class="omr-page-home__store__quests__quest__content">
+                 <div class="omr-page-home__store__quests__quest--cover text-center">
+                    <img ng-src="resources/$quests/{{quest.id}}/img/cover.jpg">
+                </div>
+                <div class="omr-page-home__store__quests__quest--title text-center">
+                    {{ quest.title }}
+                </div>
+             </div>
+            <div class="omr-page-home__store__quests__quest__actions">
+                <button ng-click="$ctrl.play(quest)">
+                    Iniciar
+                </button>
+            </div>
+        </div>
+        <omr-inline-loader show="$ctrl.loadingQuests"></omr-inline-loader>
+    </div>
+
+</div>
