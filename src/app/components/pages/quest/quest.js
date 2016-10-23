@@ -1,4 +1,4 @@
-function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService) {
+function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, BattleService) {
     var self = this;
 
     self.character = {
@@ -23,6 +23,9 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
         platformService.onReady(function () {
             self.TRANSLATIONS = translationService.getCurrentTranslations();
             _loadQuest();
+            $timeout(function() {
+                self.ready = true;
+            }, 1000);
         });
     }
 
@@ -76,16 +79,32 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _bindScene(scene) {
-        self.currentScene = _formatScene(scene);
+        var formattedScene = _formatScene(scene);
+
+        if(scene.type === 'CHALLENGE') {
+            BattleService.startBattle(self.character, scene, function(result) {
+                _onBattleEnd(result);
+            });
+        }
+
+        self.currentScene = formattedScene;
+    }
+
+    function _onBattleEnd(battleResult) {
+        console.log(battleResult);
     }
 
     function _formatScene(scene) {
         var formattedScene = {
-            scene_id: scene.scene_id,
-            title: scene.title[_questSelectedLanguage],
-            text: scene.text[_questSelectedLanguage],
-            actions: _getActions(scene)
-        };
+                scene_id: scene.scene_id,
+                title: scene.title[_questSelectedLanguage],
+                text: scene.text[_questSelectedLanguage],
+                actions: []
+            };
+        
+        if(scene.type === 'DECISION') {
+            formattedScene.actions = _getActions(scene);
+        }
 
         return formattedScene;
     }
@@ -320,5 +339,6 @@ angular.module('omr').component('quest', {
         'SOUNDS',
         'questService',
         'translationService',
+        'BattleService',
         QuestPageController]
 });

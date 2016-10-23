@@ -11,7 +11,8 @@ angular.module('omr').component('omrModalHeader', {
     controller: [OmrModalHeaderController],
     bindings: {
         title: '=',
-        onClose: '&'
+        onClose: '&',
+        noCloseButton: '='
     }
 });
 

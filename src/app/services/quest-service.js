@@ -9,7 +9,7 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
 
     return {
         getQuest: function (questId) {
-            return $http.get('resources/$quests/' + questId + '/' + questId + '.json')
+            return $http.get('resources/$quests/' + questId + '/quest.json')
                 .then(function(questData){
                     return questData.data;
                 });

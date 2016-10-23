@@ -110,7 +110,7 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
 
     return {
         getQuest: function (questId) {
-            return $http.get('resources/$quests/' + questId + '/' + questId + '.json')
+            return $http.get('resources/$quests/' + questId + '/quest.json')
                 .then(function(questData){
                     return questData.data;
                 });
@@ -343,7 +343,8 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     SAVE: 'Save',
     CANCEL: 'Cancel',
     QUEST_STORE: 'Quest Store',
-    PLAY: 'Play'
+    PLAY: 'Play',
+    CHALLENGE: 'Challenge'
 });
 
 angular.module('omr').constant('TRANSLATION_PT_BR', {
@@ -354,7 +355,8 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     SAVE: 'Salvar',
     CANCEL: 'Cancelar',
     QUEST_STORE: 'Loja de Aventuras',
-    PLAY: 'Jogar'
+    PLAY: 'Jogar',
+    CHALLENGE: 'Desafio'
 });
 
 function HomePageController($timeout, platformService, splashScreenService, soundService, SOUNDS) {
@@ -366,7 +368,7 @@ angular.module('omr').component('home', {
     controller: ['$timeout','platformService', 'splashScreenService', 'soundService', 'SOUNDS', HomePageController]
 });
 
-function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService) {
+function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, BattleService) {
     var self = this;
 
     self.character = {
@@ -391,6 +393,9 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
         platformService.onReady(function () {
             self.TRANSLATIONS = translationService.getCurrentTranslations();
             _loadQuest();
+            $timeout(function() {
+                self.ready = true;
+            }, 1000);
         });
     }
 
@@ -444,16 +449,32 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _bindScene(scene) {
-        self.currentScene = _formatScene(scene);
+        var formattedScene = _formatScene(scene);
+
+        if(scene.type === 'CHALLENGE') {
+            BattleService.startBattle(self.character, scene, function(result) {
+                _onBattleEnd(result);
+            });
+        }
+
+        self.currentScene = formattedScene;
+    }
+
+    function _onBattleEnd(battleResult) {
+        console.log(battleResult);
     }
 
     function _formatScene(scene) {
         var formattedScene = {
-            scene_id: scene.scene_id,
-            title: scene.title[_questSelectedLanguage],
-            text: scene.text[_questSelectedLanguage],
-            actions: _getActions(scene)
-        };
+                scene_id: scene.scene_id,
+                title: scene.title[_questSelectedLanguage],
+                text: scene.text[_questSelectedLanguage],
+                actions: []
+            };
+        
+        if(scene.type === 'DECISION') {
+            formattedScene.actions = _getActions(scene);
+        }
 
         return formattedScene;
     }
@@ -688,6 +709,7 @@ angular.module('omr').component('quest', {
         'SOUNDS',
         'questService',
         'translationService',
+        'BattleService',
         QuestPageController]
 });
 
@@ -846,7 +868,8 @@ angular.module('omr').component('omrModalHeader', {
     controller: [OmrModalHeaderController],
     bindings: {
         title: '=',
-        onClose: '&'
+        onClose: '&',
+        noCloseButton: '='
     }
 });
 
@@ -1107,3 +1130,76 @@ angular.module('omr').component('homeStore', {
     templateUrl: 'components/pages/home/store/home-store.html',
     controller: ['translationService', 'stateService', 'questStoreService', 'loaderService', HomeStoreController]
 });
+
+function BattleModalController($scope, translationService, BATTLE_EVENTS, platformService, $timeout, $interval) {
+    var self = this;
+
+    var _onBattleEndListener = null;
+    self.TRANSLATIONS = {};
+    self.battleStarted = false;
+    self.actions = [];
+
+    function _init() {
+        platformService.onReady(function () {
+            self.TRANSLATIONS = translationService.getCurrentTranslations();
+        });
+    }
+
+    function _startBattle(character, scene, onBattleEnd) {
+        console.log(character, scene);
+        _onBattleEndListener = onBattleEnd;
+
+        self.battleStarted = true;
+
+        var $actor = 'CHALLENGE';
+
+        $interval(function() {
+            $actor = $actor == 'CHARACTER' ? 'CHALLENGE' : 'CHARACTER';
+            self.actions.unshift({
+                text: 'texto exemplo',
+                actor: $actor
+            });
+        }, 2000);
+    }
+
+    function _onBattleEnd() {
+        _onBattleEndListener();
+    }
+
+    $scope.$on(BATTLE_EVENTS.START, function(event, data) {
+        _startBattle(data.character, data.scene, data.onBattleEnd);
+    });
+
+    self.$onInit = _init;
+}
+
+function BattleService($rootScope, BATTLE_EVENTS) {
+    return {
+        startBattle: function(character, scene, onBattleEnd) {
+            $rootScope.$broadcast(BATTLE_EVENTS.START, {
+                character: character,
+                scene: scene,
+                onBattleEnd: onBattleEnd
+            });
+        }
+    }
+}
+
+angular.module('omr').constant('BATTLE_EVENTS', {
+    START: 'BATTLE_EVENTS_START',
+    END: 'BATTLE_EVENTS_END'
+});
+
+angular.module('omr').component('battleModal', {
+    templateUrl: 'components/pages/quest/battle-modal/battle-modal.html',
+    controller: [
+        '$scope',
+        'translationService',
+        'BATTLE_EVENTS',
+        'platformService',
+        '$timeout',
+        '$interval',
+        BattleModalController]
+});
+
+angular.module('omr').factory('BattleService', ['$rootScope', 'BATTLE_EVENTS', BattleService]);

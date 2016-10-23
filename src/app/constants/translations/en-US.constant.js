@@ -6,5 +6,6 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     SAVE: 'Save',
     CANCEL: 'Cancel',
     QUEST_STORE: 'Quest Store',
-    PLAY: 'Play'
+    PLAY: 'Play',
+    CHALLENGE: 'Challenge'
 });

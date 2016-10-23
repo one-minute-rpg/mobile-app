@@ -1,5 +1,5 @@
 <div class="omr-modal-header">
-    <omr-back-button on-click="$ctrl.__onClose()" class="omr-modal-header--close-icon"></omr-back-button>
+    <omr-back-button on-click="$ctrl.__onClose()" class="omr-modal-header--close-icon" ng-hide="$ctrl.noCloseButton"></omr-back-button>
     <div class="omr-modal-header--title text-center">
         <span>{{$ctrl.title}}</span>
     </div>

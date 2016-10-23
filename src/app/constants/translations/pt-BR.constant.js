@@ -6,5 +6,6 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     SAVE: 'Salvar',
     CANCEL: 'Cancelar',
     QUEST_STORE: 'Loja de Aventuras',
-    PLAY: 'Jogar'
+    PLAY: 'Jogar',
+    CHALLENGE: 'Desafio'
 });
