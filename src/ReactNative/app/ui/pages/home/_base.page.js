@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Animated, View, Image, InteractionManager } from 'react-native';
 
 import {OmrStyle} from 'omr-ui-utils';
-import {ActionBar} from 'omr-components';
 
 export class BaseHomePage extends Component {
     constructor(props) {
@@ -18,8 +17,6 @@ export class BaseHomePage extends Component {
                 <View style={style.content}>
                     {this.renderContent()}
                 </View>
-                
-                <ActionBar style={{container: style.action_bar}} />
             </View>
         );
     }
@@ -28,15 +25,8 @@ export class BaseHomePage extends Component {
 const style = OmrStyle.create({
     container: {
         flex: 1,
-        alignItems: 'center',
     },
     content: {
-        marginBottom: ActionBar.HEIGHT
-    },
-    action_bar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0
+        flex: 1
     }
 })

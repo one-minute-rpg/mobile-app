@@ -1,7 +1,7 @@
-function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, BattleService) {
+function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService) {
     var self = this;
 
-    self.character = {
+    self.hero = {
     };
 
     self.currentScene = {
@@ -17,7 +17,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     self.$onInit = _init;
 
     var _quest = {};
-    var _questSelectedLanguage = 'PT_BR';
+    var _questSelectedLanguage = 'pt_br';
 
     function _init() {
         platformService.onReady(function () {
@@ -48,13 +48,15 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
         else {
             _questSelectedLanguage = _quest.availableLanguages[0];
         }
+
+        _questSelectedLanguage = _questSelectedLanguage.toLowerCase();
     }
 
     function _loadSavedGame() {
         var savedGame = questService.getSavedGame(_quest.quest_id);
 
         if (!!savedGame) {
-            self.character = angular.copy(savedGame.character);
+            self.hero = angular.copy(savedGame.hero);
             $location.search({ sceneId: savedGame.currentSceneId });
 
             _loadScene();
@@ -65,7 +67,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _createNewGame() {
-        self.character = angular.copy(_quest.character);
+        self.hero = angular.copy(_quest.hero);
         _loadScene();
     }
 
@@ -73,25 +75,19 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
      * SCENE
      ************************/
     function _loadScene() {
-        var currentSceneId = $location.search().sceneId || 1;
-        var sceneData = _getScene(Number(currentSceneId));
+        var currentSceneId = $location.search().sceneId;
+
+        if(!currentSceneId) {
+            currentSceneId = _quest.scenes[0].scene_id;
+        }
+
+        var sceneData = _getScene(currentSceneId);
         _bindScene(sceneData);
     }
 
     function _bindScene(scene) {
         var formattedScene = _formatScene(scene);
-
-        if(scene.type === 'CHALLENGE') {
-            BattleService.startBattle(self.character, scene, function(result) {
-                _onBattleEnd(result);
-            });
-        }
-
         self.currentScene = formattedScene;
-    }
-
-    function _onBattleEnd(battleResult) {
-        console.log(battleResult);
     }
 
     function _formatScene(scene) {
@@ -124,7 +120,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     function _filterRequireAttributeAction(action) {
         if (action.require_attribute_value) {
             for (var attr in action.require_attribute_value) {
-                if (self.character.attributes[attr].current < action.require_attribute_value[attr]) {
+                if (self.hero.attributes[attr].current < action.require_attribute_value[attr]) {
                     return false;
                 }
             }
@@ -136,9 +132,9 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     function _filterRequireItemAction(action) {
         var showAction = true;
 
-        if (action.require_item_ids.length) {
-            action.require_item_ids.forEach(function (itemId) {
-                var notFound = self.character.itens.filter(function (i) {
+        if (action.require_items.length) {
+            action.require_items.forEach(function (itemId) {
+                var notFound = self.hero.items.filter(function (i) {
                     return i.item_id == itemId && i.quantity > 0;
                 }).length == 0;
 
@@ -152,7 +148,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _getActionIcon(action) {
-        if (action.require_item_ids.length) {
+        if (action.require_items.length) {
             return 'ITEM';
         }
         else if (action.require_attribute_value !== null) {
@@ -163,24 +159,24 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _getScene(sceneId) {
-        var scene = _quest.scenes.filter(function (s) {
+        var scene = _quest.scenes.find(function (s) {
             return s.scene_id === sceneId;
-        })[0];
+        });
 
         return scene;
     }
 
     /************************
-     * CHARACTER
+     * hero
      ************************/
-    function _getCharacterItem(itemId) {
-        return self.character.itens.filter(function (item) {
+    function _getheroItem(itemId) {
+        return self.hero.items.find(function (item) {
             return item.item_id == itemId;
-        })[0];
+        });
     }
 
-    function _removeCharacterItem(itemId) {
-        self.character.itens = self.character.itens.filter(function (item) {
+    function _removeheroItem(itemId) {
+        self.hero.items = self.hero.items.filter(function (item) {
             return item.item_id != itemId;
         });
     }
@@ -258,7 +254,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     function _eventSaveGame() {
         questService.saveGame(
             _quest.quest_id,
-            self.character,
+            self.hero,
             self.currentScene.scene_id
         );
     }
@@ -269,7 +265,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _eventChangeAttribute(attribute, value) {
-        var refAttribute = self.character.attributes[attribute];
+        var refAttribute = self.hero.attributes[attribute];
         refAttribute.current += value;
 
         if (refAttribute.current > refAttribute.max) {
@@ -278,19 +274,19 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _eventAddItem(itemId, quantity) {
-        var questItem = _quest.itens.filter(function (item) {
+        var questItem = _quest.items.find(function (item) {
             return item.item_id == itemId;
-        })[0];
+        });
 
-        var charItem = _getCharacterItem(itemId);
+        var charItem = _getheroItem(itemId);
 
         if (charItem) {
-            self.character.itens[
-                self.character.itens.indexOf(charItem)
+            self.hero.items[
+                self.hero.items.indexOf(charItem)
             ].quantity += quantity;
         }
         else {
-            self.character.itens.push({
+            self.hero.items.push({
                 item_id: questItem.item_id,
                 quantity: quantity
             });
@@ -299,19 +295,19 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
 
     function _eventRemoveItem(itemId, quantity) {
         if (quantity == 0) {
-            _removeCharacterItem(itemId);
+            _removeheroItem(itemId);
         }
         else {
-            var charItem = _getCharacterItem(itemId);
+            var charItem = _getheroItem(itemId);
             if (charItem) {
                 charItem.quantity -= quantity;
 
                 if (charItem.quantity <= 0) {
-                    _removeCharacterItem(itemId);
+                    _removeheroItem(itemId);
                 }
                 else {
-                    self.character.itens[
-                        self.character.itens.indexOf(charItem)
+                    self.hero.items[
+                        self.hero.items.indexOf(charItem)
                     ] = charItem;
                 }
             }
@@ -339,6 +335,5 @@ angular.module('omr').component('quest', {
         'SOUNDS',
         'questService',
         'translationService',
-        'BattleService',
         QuestPageController]
 });

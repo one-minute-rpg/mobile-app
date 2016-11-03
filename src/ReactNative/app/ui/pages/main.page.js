@@ -4,15 +4,15 @@ import { View, Text, Navigator, Image } from 'react-native';
 import {DeviceService} from 'omr-services';
 import {OmrStyle} from 'omr-ui-utils';
 import {HomePage} from './home/home.page';
+import {OmrConfiguration} from 'omr-components';
 
 const imgBackground = require(`../resources/images/background.png`);
-const dimensions = DeviceService.getInstance().getDimensions();
 
 const routes = {
     'home': {
         title: ''
     }
-}
+};
 
 export class MainPage extends Component {
 
@@ -33,8 +33,13 @@ export class MainPage extends Component {
         );
     }
 
-    _renderNavigationLeftButton(route, navigator, index, navState) {
-        return null;
+    _renderNavigationRightButton(route, navigator, index, navState) {
+        return (
+            <OmrConfiguration 
+                style={{container: {
+                    marginTop: 10
+                }}} />
+        );
     }
 
     _renderNavigationTitle (route, navigator, index, navState) {
@@ -46,7 +51,7 @@ export class MainPage extends Component {
             <Navigator.NavigationBar
                 routeMapper={{
                     LeftButton: this._renderNavigationLeftButton,
-                    RightButton: this._renderNavigationLeftButton,
+                    RightButton: this._renderNavigationRightButton,
                     Title: this._renderNavigationTitle
                 }}
                 style={style.navbar}
@@ -71,20 +76,22 @@ export class MainPage extends Component {
 
 const style = OmrStyle.create({
     container: {
-        flex: 1
+        flex: 1,
+        minWidth: OmrStyle.SIZES.WINDOW.WIDTH,
+        minHeight: OmrStyle.SIZES.WINDOW.HEIGHT
     },
     background: {
         flex: 1,
         resizeMode: 'cover',
-        width: dimensions.width,
-        height: dimensions.height
+        width: OmrStyle.SIZES.WINDOW.WIDTH,
+        height: OmrStyle.SIZES.WINDOW.HEIGHT
     },  
     navigator: {
         flex: 1,
         paddingTop: 80
     },
     navbar: {
-        backgroundColor: OmrStyle.COLORS.COLOR_1
+        backgroundColor: OmrStyle.COLORS.BLACK
     },
     navbar__button: {
         color: OmrStyle.COLORS.COLOR_WHITE

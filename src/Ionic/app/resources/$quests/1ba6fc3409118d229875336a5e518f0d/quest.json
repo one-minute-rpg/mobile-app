@@ -1,0 +1,48 @@
+{
+    "quest_id": "basbahd3123123bashbdhabsd",
+    "title": {
+        "pt_br": "A torre do mal",
+        "en_us": "The evil tower"
+    },
+    "description": {
+        "pt_br": "Uma aventura mística.",
+        "en_us": "A mystical adventure."
+    },
+    "hero": {
+        "attributes": {
+            "health": 10,
+            "strength": 5,
+            "agility": 4,
+            "intelligence": 4
+        },
+        "items": []
+    },
+    "items": [],
+    "scenes": [
+        {
+            "scene_id": "scene_hcndhrldhfhcid",
+            "title": {
+                "pt_br": "A entrada",
+                "en_us": "The entrance"
+            },
+            "text": {
+                "pt_br": "A entrada",
+                "en_us": "The entrance"
+            },
+            "actions": [
+                {
+                    "text": {
+                        "pt_br": "Abrir a porta",
+                        "en_us": "Open the door"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": []
+                }
+            ],
+            "on_die_events": [],
+            "save_point": true,
+            "type": "DECISION"
+        }
+    ]
+}

@@ -3,11 +3,11 @@ import { Animated, View, Image, InteractionManager, TouchableOpacity, Text } fro
 
 import {OmrStyle} from 'omr-ui-utils';
 import {DeviceService} from 'omr-services';
+import {OmrText} from 'omr-components';
 
 import {BaseHomePage} from './_base.page';
 
 const LOGO = require('../../resources/images/logo.png');
-const dimensions = DeviceService.getInstance().getDimensions();
 
 export class HomePage extends BaseHomePage {
     constructor(props) {
@@ -34,11 +34,9 @@ export class HomePage extends BaseHomePage {
                     source={LOGO} 
                     style={[style.logo, {opacity: this._logoOpacity}]} 
                 />
-                <View style={style.buttons}>
-                    <TouchableOpacity style={style.buttons__button}>
-                        <Text style={style.buttons__button__text}>Jogar</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity style={style.play_button}>
+                    <OmrText style={style.play_button__text}>Jogar</OmrText>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -50,25 +48,21 @@ const style = OmrStyle.create({
         alignItems: 'center'
     },
     logo: {
-        height: 210,
-        width: 210
+        height: 230,
+        width: 230
     },
-    buttons: {
-        marginTop: 30,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    buttons__button: {
-        backgroundColor: 'rgba(0,0,0, 0.6)',
-        borderWidth: 1,
-        width: dimensions.width - 80,
-        height: 50,
+    play_button: {
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 7
+        position: 'absolute',
+        bottom: 30,
+        left: 0,
+        height: 80,
+        width: OmrStyle.SIZES.WINDOW.WIDTH,
+        backgroundColor: OmrStyle.COLORS.BLACK,
     },
-    buttons__button__text: {
+    play_button__text: {
         color: OmrStyle.COLORS.WHITE,
-        fontSize: 20
+        fontSize: 30,
     }
 })

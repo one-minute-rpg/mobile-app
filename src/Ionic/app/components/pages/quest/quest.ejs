@@ -61,7 +61,7 @@
         <div class="omr-page-quest__quest-bar__item">
             <% include ../../shared/icons/heart.ejs %>
             <span class="omr-page-quest__quest-bar__item--text">
-                {{$ctrl.character.attributes.health.current}}/{{$ctrl.character.attributes.health.max}}
+                {{$ctrl.hero.attributes.health}}
             </span>
         </div>
         <div class="omr-page-quest__quest-bar__item">
@@ -73,9 +73,5 @@
             <span class="omr-page-quest__quest-bar__item--text">Status</span>
         </div>
     </div>
-    <div ng-style="{'opacity': $ctrl.ready ? 1 : 0}">
-        <battle-modal></battle-modal>
-    </div>
-    
     <omr-loader></omr-loader>
 </div>
