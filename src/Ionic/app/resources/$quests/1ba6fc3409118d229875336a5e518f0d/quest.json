@@ -17,7 +17,32 @@
         },
         "items": []
     },
-    "items": [],
+    "items": [
+        {
+            "item_id": "item_uuenlsphfnc",
+            "name": {
+                "pt_br": "Poção de Cura",
+                "en_us": "Healing Potion"
+            },
+            "type": "INVENTORY",
+            "events": [
+                {
+                    "type": "CHANGE_ATTRIBUTE",
+                    "attribute": "health",
+                    "value": 3,
+                    "text": {
+                        "pt_br": "Você recuperou 3 de vida.",
+                        "en_us": "Healing 3 health points."
+                    }
+                },
+                {
+                    "type": "REMOVE_ITEM",
+                    "item_id": "item_uuenlsphfnc",
+                    "quantity": 1
+                }
+            ]
+        }
+    ],
     "scenes": [
         {
             "scene_id": "scene_hcndhrldhfhcid",
@@ -38,10 +63,72 @@
                     "require_items": [],
                     "require_attribute_value": null,
                     "events": []
+                },
+                {
+                    "text": {
+                        "pt_br": "Receber dano",
+                        "en_us": "Open the door"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "type": "CHANGE_ATTRIBUTE",
+                            "attribute": "health",
+                            "value": -2,
+                            "text": {
+                                "pt_br": "Você recebeu 2 de dano",
+                                "en_us": "Open the door"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "text": {
+                        "pt_br": "Ganhar Poção de Cura",
+                        "en_us": "Obtain Healing Potion"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "type": "ADD_ITEM",
+                            "item_id": "item_uuenlsphfnc",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "text": {
+                        "pt_br": "Perder Poção de Cura",
+                        "en_us": "Lost Healing Potion"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "type": "REMOVE_ITEM",
+                            "item_id": "item_uuenlsphfnc",
+                            "quantity": 1
+                        }
+                    ]
+                },
+                {
+                    "text": {
+                        "pt_br": "Usar Poção de Cura",
+                        "en_us": "Use Healing Potion"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "type": "USE_ITEM",
+                            "item_id": "item_uuenlsphfnc"
+                        }
+                    ]
                 }
             ],
             "on_die_events": [],
-            "save_point": true,
             "type": "DECISION"
         }
     ]

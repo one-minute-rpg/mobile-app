@@ -169,7 +169,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     /************************
      * hero
      ************************/
-    function _getheroItem(itemId) {
+    function _getHeroItem(itemId) {
         return self.hero.items.find(function (item) {
             return item.item_id == itemId;
         });
@@ -192,7 +192,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
 
         var notifications = events
             .filter(function(e) {
-                return !!e.text[_questSelectedLanguage];
+                return !!e.text && !!e.text[_questSelectedLanguage];
             })
             .map(function(e){
                 return {
@@ -230,25 +230,46 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
      ************************/
     function _onChoseAction(action) {
         var events = action.events;
+        _raiseEvents(events);
+    }
+
+    function _raiseEvents(events) {
         _showNotificationsForEvents(events);
 
         events.forEach(function (e) {
-            if (e.event_type === 'CHANGE_ATTRIBUTE') {
+            if (e.type === 'CHANGE_ATTRIBUTE') {
                 _eventChangeAttribute(e.attribute, e.value);
             }
-            else if (e.event_type === 'ADD_ITEM') {
+            else if (e.type === 'ADD_ITEM') {
                 _eventAddItem(e.item_id, e.quantity);
             }
-            else if (e.event_type === 'REMOVE_ITEM') {
+            else if (e.type === 'REMOVE_ITEM') {
                 _eventRemoveItem(e.item_id, e.quantity);
             }
-            else if (e.event_type === 'GO_TO_SCENE') {
+            else if (e.type === 'USE_ITEM') {
+                _eventUseItem(e.item_id);
+            }
+            else if (e.type === 'GO_TO_SCENE') {
                 _eventGoToScene(e.scene_id);
             }
-            else if (e.event_type === 'SAVE_GAME') {
+            else if (e.type === 'SAVE_GAME') {
                 _eventSaveGame();
             }
         });
+    }
+
+    function _eventUseItem(itemId) {
+        var hasItem = !!self.hero.items.find(function(item) {
+            return item.item_id == itemId && item.quantity > 0;
+        });
+
+        if(hasItem) {
+            var item = _quest.items.find(function (item) {
+                return item.item_id == itemId;
+            });
+
+            _raiseEvents(item.events);
+        }
     }
 
     function _eventSaveGame() {
@@ -257,28 +278,31 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
             self.hero,
             self.currentScene.scene_id
         );
+
+        console.log('Game Saved');
     }
 
     function _eventGoToScene(sceneId) {
         $location.search({ sceneId: sceneId });
         _loadScene();
+
+        console.log('Going to scene ' + sceneId);
     }
 
     function _eventChangeAttribute(attribute, value) {
-        var refAttribute = self.hero.attributes[attribute];
-        refAttribute.current += value;
-
-        if (refAttribute.current > refAttribute.max) {
-            refAttribute.current = refAttribute.max;
-        }
+        self.hero.attributes[attribute] += value;
+        console.log('Changing attribute ' + attribute + ': ' + value);
+        console.log(self.hero.attributes);
     }
 
     function _eventAddItem(itemId, quantity) {
+        console.log('Adding item ' + itemId + ': ' + quantity);
+
         var questItem = _quest.items.find(function (item) {
             return item.item_id == itemId;
         });
 
-        var charItem = _getheroItem(itemId);
+        var charItem = _getHeroItem(itemId);
 
         if (charItem) {
             self.hero.items[
@@ -291,14 +315,18 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
                 quantity: quantity
             });
         }
+
+        console.log(self.hero.items);
     }
 
     function _eventRemoveItem(itemId, quantity) {
+        console.log('Removing item ' + itemId + ': ' + quantity);
+
         if (quantity == 0) {
             _removeheroItem(itemId);
         }
         else {
-            var charItem = _getheroItem(itemId);
+            var charItem = _getHeroItem(itemId);
             if (charItem) {
                 charItem.quantity -= quantity;
 
@@ -312,6 +340,8 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
                 }
             }
         }
+
+        console.log(self.hero.items);
     }
 
 
