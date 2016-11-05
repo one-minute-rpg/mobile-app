@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'KIN668';
+    src: url('fonts/KIN668.eot');
+    src: url('fonts/KIN668.eot') format('embedded-opentype'),
+         url('fonts/KIN668.woff2') format('woff2'),
+         url('fonts/KIN668.woff') format('woff'),
+         url('fonts/KIN668.ttf') format('truetype'),
+         url('fonts/KIN668.svg#KIN668') format('svg');
+}

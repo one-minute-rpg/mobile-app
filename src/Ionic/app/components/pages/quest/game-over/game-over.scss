@@ -1,0 +1,38 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-game-over-modal {
+    overflow-y: scroll;
+
+    .omr-game-over-modal--content {
+        position: relative;
+        overflow-y: scroll;
+    }
+
+    .omr-game-over-modal__icon {
+        text-align: 'center';
+
+        .omr-icon-grave {
+            width: 70%;
+            margin-left: 15%;
+        }
+    }
+
+    .omr-game-over-modal__text {
+        font-family: $font-paragraph;
+        font-size: 14px;
+        padding: 5px;
+        height: 26vh;
+    }
+
+    .omr-game-over-modal__buttons {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+
+        .omr-button {
+            font-size: 14px;
+        }
+    }
+}

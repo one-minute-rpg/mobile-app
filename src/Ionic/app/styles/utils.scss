@@ -5,6 +5,11 @@
     text-align: center;
 }
 
+.text-justify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 .omr-invisible {
     opacity: 0;
 }
@@ -29,6 +34,7 @@
     color: $color-white-1;
     margin-bottom: 10px;
     font-family: $font-default;
+    letter-spacing: 1px;
 
     &:active {
         background-color: darken($color-dark-golden, 30%);

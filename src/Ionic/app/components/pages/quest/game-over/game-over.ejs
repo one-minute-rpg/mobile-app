@@ -1,0 +1,26 @@
+<ion-modal-view>
+    <omr-modal-header title="TRANSLATIONS.GAME_OVER"></omr-modal-header>
+
+    <omr-modal-content>
+        <div class="omr-game-over-modal">
+            <div class="omr-game-over-modal--content">
+                <div class="omr-game-over-modal__icon">
+                    <% include ../../../shared/icons/grave.ejs %>
+                </div>
+                <div class="omr-game-over-modal__text text-justify">
+                    {{text}}
+                </div>
+                <div class="omr-game-over-modal__buttons">
+                    <button class="omr-button"
+                        ng-click="continueFromLastSavePoint()">
+                        {{TRANSLATIONS.CONTINUE_FROM_LAST_SAVE_POINT}}
+                    </button>
+                    <button class="omr-button"
+                            ng-click="goToHome()">
+                        {{TRANSLATIONS.BACK_TO_HOME}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </omr-modal-content>
+</ion-modal-view>

@@ -7,5 +7,8 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     CANCEL: 'Cancelar',
     QUEST_STORE: 'Loja de Aventuras',
     PLAY: 'Jogar',
-    CHALLENGE: 'Desafio'
+    CHALLENGE: 'Desafio',
+    GAME_OVER: 'Game Over',
+    BACK_TO_HOME: 'Voltar para a tela inicial',
+    CONTINUE_FROM_LAST_SAVE_POINT: 'Continuar do último ponto salvo'
 });

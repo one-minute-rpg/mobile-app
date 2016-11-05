@@ -1,4 +1,4 @@
-function QuestPageController($stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService) {
+function QuestPageController($scope, $stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, $ionicModal) {
     var self = this;
 
     self.hero = {
@@ -213,7 +213,7 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     }
 
     function _getNotificationType(event) {
-        switch(event.event_type) {
+        switch(event.type) {
             case 'ADD_ITEM':
             case 'REMOVE_ITEM':
                 return 'ITEM';
@@ -255,7 +255,14 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
             else if (e.type === 'SAVE_GAME') {
                 _eventSaveGame();
             }
+            else if(e.type === 'GAME_OVER') {
+                _eventGameOver(e);
+            }
         });
+    }
+
+    function _eventGameOver(e) {
+        self.openModalGameOver(e);
     }
 
     function _eventUseItem(itemId) {
@@ -351,11 +358,38 @@ function QuestPageController($stateParams, $timeout, $location, platformService,
     function _goHome() {
 
     }
+
+    /************************
+     * GAME OVER
+     ************************/
+    var $modalGameOverScope = $scope;
+    $modalGameOverScope.$modal = null;
+    
+    $modalGameOverScope.goToHome = function() {
+        console.log('GAME_OVER_GO_HOME');
+    }
+
+    $modalGameOverScope.continueFromLastSavePoint = function() {
+        console.log('CONTINUE_FROM_LAST_SAVE_POINT');
+    }
+
+    self.openModalGameOver = function(event) {
+        $modalGameOverScope.TRANSLATIONS = self.TRANSLATIONS;
+        $modalGameOverScope.text = event.text ? event.text[_questSelectedLanguage] : '';
+        $ionicModal.fromTemplateUrl('components/pages/quest/game-over/game-over.html', {
+            scope: $modalGameOverScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $modalGameOverScope.$modal = modal;
+            $modalGameOverScope.$modal.show();
+        });
+    }
 }
 
 angular.module('omr').component('quest', {
     templateUrl: 'components/pages/quest/quest.html',
     controller: [
+        '$scope',
         '$stateParams',
         '$timeout',
         '$location',
@@ -365,5 +399,6 @@ angular.module('omr').component('quest', {
         'SOUNDS',
         'questService',
         'translationService',
+        '$ionicModal',
         QuestPageController]
 });

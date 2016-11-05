@@ -7,5 +7,8 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     CANCEL: 'Cancel',
     QUEST_STORE: 'Quest Store',
     PLAY: 'Play',
-    CHALLENGE: 'Challenge'
+    CHALLENGE: 'Challenge',
+    GAME_OVER: 'Game Over',
+    BACK_TO_HOME: 'Back to home',
+    CONTINUE_FROM_LAST_SAVE_POINT: 'Continue from last saved point'
 });

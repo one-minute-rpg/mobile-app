@@ -62,7 +62,12 @@
                     },
                     "require_items": [],
                     "require_attribute_value": null,
-                    "events": []
+                    "events": [
+                        {
+                            "type": "GO_TO_SCENE",
+                            "scene_id": "scene_ncvdirnbjbddj1ksmd"
+                        }
+                    ]
                 },
                 {
                     "text": {
@@ -94,7 +99,11 @@
                         {
                             "type": "ADD_ITEM",
                             "item_id": "item_uuenlsphfnc",
-                            "quantity": 1
+                            "quantity": 1,
+                            "text": {
+                                "pt_br": "Você ganhou uma nova poção.",
+                                "en_us": "You gained a new potion."
+                            }
                         }
                     ]
                 },
@@ -109,7 +118,11 @@
                         {
                             "type": "REMOVE_ITEM",
                             "item_id": "item_uuenlsphfnc",
-                            "quantity": 1
+                            "quantity": 1,
+                            "text": {
+                                "pt_br": "Você perdeu sua poção.",
+                                "en_us": "Your potion has been removed."
+                            }
                         }
                     ]
                 },
@@ -124,6 +137,38 @@
                         {
                             "type": "USE_ITEM",
                             "item_id": "item_uuenlsphfnc"
+                        }
+                    ]
+                }
+            ],
+            "on_die_events": [],
+            "type": "DECISION"
+        },
+        {
+            "scene_id": "scene_ncvdirnbjbddj1ksmd",
+            "title": {
+                "pt_br": "A estrada para o castelo",
+                "en_us": "The road to the castle"
+            },
+            "text": {
+                "pt_br": "A entrada",
+                "en_us": "The entrance"
+            },
+            "actions": [
+                {
+                    "text": {
+                        "pt_br": "Ir para o castelo",
+                        "en_us": "Go to the castle"
+                    },
+                    "require_items": [],
+                    "require_attribute_value": null,
+                    "events": [
+                        {
+                            "type": "GAME_OVER",
+                            "text": {
+                                "pt_br": "Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos, como também ao salto para a editoração eletrônica, permanecendo essencialmente inalterado.",
+                                "en_us": "The tower wizard kills you."
+                            }
                         }
                     ]
                 }
