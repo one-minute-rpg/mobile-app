@@ -1,0 +1,26 @@
+<ion-modal-view>
+    <omr-modal-header title="TRANSLATIONS.ITEMS" on-close="closeModalHeroItens()"></omr-modal-header>
+
+    <omr-modal-content>
+        <div class="omr-modal-hero-itens">
+            <div class="omr-modal-hero-itens__no-itens" ng-if="itens.length == 0">
+                {{TRANSLATIONS.YOU_DONT_HAVE_ITENS}}
+            </div>
+            <div class="omr-modal-hero-itens__itens">
+                <div class="omr-modal-hero-itens__itens__item" 
+                    ng-repeat="item in itens"
+                    ng-click="selectItem(item)">
+                    <div class="omr-modal-hero-itens__itens__item--name">
+                        {{item.name}}
+                    </div>
+                    <div class="omr-modal-hero-itens__itens__item--description">
+                        {{item.description}}
+                    </div>
+                    <div class="omr-modal-hero-itens__itens__item--quantity">
+                        {{TRANSLATIONS.QUANTITY}}: <b>{{item.quantity}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </omr-modal-content>
+</ion-modal-view>

@@ -12,5 +12,13 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     BACK_TO_HOME: 'Back to home',
     CONTINUE_FROM_LAST_SAVE_POINT: 'Continue from last saved point',
     WANT_TO_BACK_TO_HOME: 'Want to go back to home?',
-    ADVENTURE: 'Adventure'
+    ADVENTURE: 'Adventure',
+    ITEMS: 'Items',
+    QUANTITY: 'Quantity',
+    USE: 'Use',
+    WANT_TO_USE_ITEM: 'Want to use the item',
+    YES: 'Yes',
+    NO: 'No',
+    OK: 'Ok',
+    YOU_DONT_HAVE_ITENS: 'You don\'t have items'
 });

@@ -1,0 +1,32 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+
+.omr-modal-hero-itens {
+    .omr-modal-hero-itens__no-itens {
+        text-align: center;
+    }
+
+    .omr-modal-hero-itens__itens {
+
+        .omr-modal-hero-itens__itens__item {
+            position: relative;
+            margin-bottom: 5px;
+            border-bottom: 2px solid $color-brown-3;
+            padding: 10px;
+            color: $color-white-1;
+
+            .omr-modal-hero-itens__itens__item--name {
+                font-family: $font-default;
+                font-size: 16px;
+            }
+            .omr-modal-hero-itens__itens__item--description {
+                font-family: $font-paragraph;
+            }
+            .omr-modal-hero-itens__itens__item--quantity {
+                font-size: 12px;
+                color: $color-brown-1;
+            }
+        }
+    }
+}

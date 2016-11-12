@@ -36,4 +36,9 @@
         background-color: $color-white-1;
         color: $color-brown-3;
     }
+
+    &.activated {
+        background-color: $color-brown-3;
+        color: $color-white-1;
+    }
 }

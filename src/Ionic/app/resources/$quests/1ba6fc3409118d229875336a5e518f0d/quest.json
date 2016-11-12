@@ -25,6 +25,10 @@
                 "en_us": "Healing Potion"
             },
             "type": "INVENTORY",
+            "description": {
+                "pt_br": "Esta é uma poção misteriosa...",
+                "en_us": "This is a misterious potion..."
+            },
             "events": [
                 {
                     "type": "CHANGE_ATTRIBUTE",

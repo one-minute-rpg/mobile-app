@@ -14,6 +14,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     self.goHome = _goHome;
     self.TRANSLATIONS = {};
     self.onChoseAction = _onChoseAction;
+    self.openHeroItensModal = _openModalHeroItens;
     self.$onInit = _init;
 
     var _quest = {};
@@ -265,7 +266,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     }
 
     function _eventGameOver(e) {
-        self.openModalGameOver(e);
+        _openModalGameOver(e);
     }
 
     function _eventUseItem(itemId) {
@@ -372,7 +373,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
             confirmPopup.then(function (res) {
                 if (res) {
-                   __done();
+                    __done();
                 }
             });
         }
@@ -399,7 +400,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         $modalGameOverScope.$modal.remove();
     }
 
-    self.openModalGameOver = function (event) {
+    function _openModalGameOver(event) {
         $modalGameOverScope.TRANSLATIONS = self.TRANSLATIONS;
         $modalGameOverScope.text = event.text ? event.text[_questSelectedLanguage] : '';
 
@@ -410,6 +411,86 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             $modalGameOverScope.$modal = modal;
             $modalGameOverScope.$modal.show();
         });
+    }
+
+
+    /************************
+     * HERO ITENS
+     ************************/
+    var $modalHeroItens = $scope;
+    function _openModalHeroItens() {
+        $modalHeroItens.TRANSLATIONS = self.TRANSLATIONS;
+
+        var modalItens = self.hero.items.map(function (item) {
+            var questItem = _quest.items.find(function (i) {
+                return i.item_id == item.item_id;
+            });
+
+            var resultItem = angular.extend({}, item, questItem);
+            resultItem.name = resultItem.name[_questSelectedLanguage];
+            resultItem.description = resultItem.description[_questSelectedLanguage];
+
+            return resultItem;
+        });
+
+        $modalHeroItens.itens = modalItens || [];
+
+        $ionicModal.fromTemplateUrl('components/pages/quest/hero-itens/hero-itens.html', {
+            scope: $modalHeroItens,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $modalHeroItens.$modal = modal;
+            $modalHeroItens.$modal.show();
+            console.log($modalHeroItens.itens);
+        });
+    }
+
+    $modalHeroItens.selectItem = function (item) {
+        console.log(item);
+
+        var popup = {
+            title: self.TRANSLATIONS.ITEMS,
+            template: item.description,
+            scope: $scope,
+            buttons: [
+                {
+                    text: self.TRANSLATIONS.OK,
+                    type: 'button-positive'
+                }
+            ]
+        };
+
+        if(item.type == 'INVENTORY') {
+            popup.buttons = [
+                {
+                    text: self.TRANSLATIONS.NO,
+                    type: 'button-default'
+                },
+                {
+                    text: self.TRANSLATIONS.YES,
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        $modalHeroItens.requestUseItem(item);
+                    }
+                }
+            ];
+
+            popup.template = self.TRANSLATIONS.WANT_TO_USE_ITEM + ' <b>' + item.name + '</b>?';
+        }
+
+        var myPopup = $ionicPopup.show(popup);
+    }
+
+    $modalHeroItens.requestUseItem = function(item) {
+        $modalHeroItens.closeModalHeroItens();
+        
+        $timeout(function(){
+            _raiseEvents(item.events);
+        }, 300);
+    }
+
+    $modalHeroItens.closeModalHeroItens = function () {
+        $modalHeroItens.$modal.hide();
     }
 }
 
