@@ -16,7 +16,7 @@ $notifications-bottom: 60px;
             text-align: center;
             padding-top: 3vh;
 
-            h2 {
+            h3 {
                 color: lighten($color: $color-brown-1, $amount: 15%) ;
                 letter-spacing: 2px;
             }
@@ -40,8 +40,8 @@ $notifications-bottom: 60px;
                 position: relative;
                 margin-bottom: 3vh;
 
-                font-family: $font-paragraph;
-                font-size: 16px;
+                font-family: $font-default;
+                font-size: 14px;
                 padding-left: 40px;
 
                 .omr-page-quest__scene__actions__action--icon {

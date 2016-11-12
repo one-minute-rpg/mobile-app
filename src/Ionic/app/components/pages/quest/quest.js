@@ -449,7 +449,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         console.log(item);
 
         var popup = {
-            title: self.TRANSLATIONS.ITEMS,
+            title: item.name,
             template: item.description,
             scope: $scope,
             buttons: [

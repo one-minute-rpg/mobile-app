@@ -15,7 +15,12 @@
             "agility": 4,
             "intelligence": 4
         },
-        "items": []
+        "items": [
+            {
+                "item_id": "item_casdasdas",
+                "quantity": 1
+            }
+        ]
     },
     "items": [
         {
@@ -45,18 +50,31 @@
                     "quantity": 1
                 }
             ]
+        },
+        {
+            "item_id": "item_casdasdas",
+            "name": {
+                "pt_br": "Chave de Prata",
+                "en_us": "Silver Key"
+            },
+            "type": "QUEST",
+            "description": {
+                "pt_br": "Esta é uma chave antiga de prata.",
+                "en_us": "This is an elder silver key."
+            },
+            "events": []
         }
     ],
     "scenes": [
         {
             "scene_id": "scene_hcndhrldhfhcid",
             "title": {
-                "pt_br": "A entrada",
-                "en_us": "The entrance"
+                "pt_br": "A entrada para o castelo Forgoror",
+                "en_us": "The entrance to the Forgoror castle"
             },
             "text": {
-                "pt_br": "A entrada",
-                "en_us": "The entrance"
+                "pt_br": "Matagal na nating alam na nakukuha ang atensyon ng nagbabasa ang nababasa na nilalaman ng pahina kapag tinitignan ang pagkakaayos. Ang punto ng paggamit ng Lorem Ipsum ay ito ay may humigit-kumulang na normal na distribusyion ng mga lettra, kesa sa paggamit ng 'Dito ang nilalaman",
+                "en_us": "Matagal na nating alam na nakukuha ang atensyon ng nagbabasa ang nababasa na nilalaman ng pahina kapag tinitignan ang pagkakaayos. Ang punto ng paggamit ng Lorem Ipsum ay ito ay may humigit-kumulang na normal na distribusyion ng mga lettra, kesa sa paggamit ng 'Dito ang nilalaman"
             },
             "actions": [
                 {
