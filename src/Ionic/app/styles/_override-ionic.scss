@@ -13,3 +13,27 @@
         color: $color-white-1;
     }
 }
+
+.popup-container {
+    background-color: rgba(0,0,0,0.85);
+}
+
+.popup {
+    border: 2px solid $color-brown-3;
+    background-color: $color-black-1;
+    color: $color-white-1;
+}
+
+.popup-body, .popup-head, .popup-title, .popup-buttons {
+    background-color: $color-black-1;
+    color: $color-white-1;
+}
+
+.popup-buttons .button {
+    background-color: $color-brown-2;
+
+    &.button-default {
+        background-color: $color-white-1;
+        color: $color-brown-3;
+    }
+}
