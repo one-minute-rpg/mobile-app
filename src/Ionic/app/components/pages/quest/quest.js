@@ -1,4 +1,4 @@
-function QuestPageController($scope, $stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, $ionicModal) {
+function QuestPageController($scope, $stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, $ionicModal, splashScreenService, stateService, $ionicPopup) {
     var self = this;
 
     self.hero = {
@@ -23,7 +23,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         platformService.onReady(function () {
             self.TRANSLATIONS = translationService.getCurrentTranslations();
             _loadQuest();
-            $timeout(function() {
+            $timeout(function () {
                 self.ready = true;
             }, 1000);
         });
@@ -40,9 +40,9 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
     function _configureSelectedLanguageForQuest() {
         var currentTranslationKey = self.TRANSLATIONS.$NAME;
-        var questHasLanguage = _quest.availableLanguages.indexOf(currentTranslationKey) >= 0; 
+        var questHasLanguage = _quest.availableLanguages.indexOf(currentTranslationKey) >= 0;
 
-        if(questHasLanguage) {
+        if (questHasLanguage) {
             _questSelectedLanguage = currentTranslationKey;
         }
         else {
@@ -77,7 +77,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     function _loadScene() {
         var currentSceneId = $location.search().sceneId;
 
-        if(!currentSceneId) {
+        if (!currentSceneId) {
             currentSceneId = _quest.scenes[0].scene_id;
         }
 
@@ -92,13 +92,13 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
     function _formatScene(scene) {
         var formattedScene = {
-                scene_id: scene.scene_id,
-                title: scene.title[_questSelectedLanguage],
-                text: scene.text[_questSelectedLanguage],
-                actions: []
-            };
-        
-        if(scene.type === 'DECISION') {
+            scene_id: scene.scene_id,
+            title: scene.title[_questSelectedLanguage],
+            text: scene.text[_questSelectedLanguage],
+            actions: []
+        };
+
+        if (scene.type === 'DECISION') {
             formattedScene.actions = _getActions(scene);
         }
 
@@ -188,32 +188,35 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     var _lastNotificationTimer = null;
 
     function _showNotificationsForEvents(events) {
-        if(!events || !events.length) return;
+        if (!events || !events.length) return;
 
         var notifications = events
-            .filter(function(e) {
-                return !!e.text && !!e.text[_questSelectedLanguage];
+            .filter(function (e) {
+                var typeIsValid = e.type !== 'GAME_OVER';
+                var hasText = !!e.text && !!e.text[_questSelectedLanguage];
+
+                return typeIsValid && hasText;
             })
-            .map(function(e){
+            .map(function (e) {
                 return {
                     type: _getNotificationType(e),
                     text: e.text[_questSelectedLanguage]
                 };
             });
 
-        self.notifications= notifications;
+        self.notifications = notifications;
 
-        if(_lastNotificationTimer) {
+        if (_lastNotificationTimer) {
             $timeout.cancel(_lastNotificationTimer);
         }
 
-        _lastNotificationTimer = $timeout(function(){
+        _lastNotificationTimer = $timeout(function () {
             self.notifications = [];
         }, 2000);
     }
 
     function _getNotificationType(event) {
-        switch(event.type) {
+        switch (event.type) {
             case 'ADD_ITEM':
             case 'REMOVE_ITEM':
                 return 'ITEM';
@@ -255,7 +258,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             else if (e.type === 'SAVE_GAME') {
                 _eventSaveGame();
             }
-            else if(e.type === 'GAME_OVER') {
+            else if (e.type === 'GAME_OVER') {
                 _eventGameOver(e);
             }
         });
@@ -266,11 +269,11 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     }
 
     function _eventUseItem(itemId) {
-        var hasItem = !!self.hero.items.find(function(item) {
+        var hasItem = !!self.hero.items.find(function (item) {
             return item.item_id == itemId && item.quantity > 0;
         });
 
-        if(hasItem) {
+        if (hasItem) {
             var item = _quest.items.find(function (item) {
                 return item.item_id == itemId;
             });
@@ -355,8 +358,27 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     /************************
      * ROUTE
      ************************/
-    function _goHome() {
+    function _goHome(params) {
+        function __done() {
+            stateService.goHomeIndex();
+            splashScreenService.show();
+        }
 
+        if (params && params.needConfirmation) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: self.TRANSLATIONS.ADVENTURE,
+                template: self.TRANSLATIONS.BACK_TO_HOME + '?'
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                   __done();
+                }
+            });
+        }
+        else {
+            __done();
+        }
     }
 
     /************************
@@ -364,18 +386,23 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
      ************************/
     var $modalGameOverScope = $scope;
     $modalGameOverScope.$modal = null;
-    
-    $modalGameOverScope.goToHome = function() {
-        console.log('GAME_OVER_GO_HOME');
+
+    $modalGameOverScope.goToHome = function () {
+        $modalGameOverScope.$modal.hide();
+        $modalGameOverScope.$modal.remove();
+        _goHome();
     }
 
-    $modalGameOverScope.continueFromLastSavePoint = function() {
+    $modalGameOverScope.continueFromLastSavePoint = function () {
         console.log('CONTINUE_FROM_LAST_SAVE_POINT');
+        $modalGameOverScope.$modal.hide();
+        $modalGameOverScope.$modal.remove();
     }
 
-    self.openModalGameOver = function(event) {
+    self.openModalGameOver = function (event) {
         $modalGameOverScope.TRANSLATIONS = self.TRANSLATIONS;
         $modalGameOverScope.text = event.text ? event.text[_questSelectedLanguage] : '';
+
         $ionicModal.fromTemplateUrl('components/pages/quest/game-over/game-over.html', {
             scope: $modalGameOverScope,
             animation: 'slide-in-up'
@@ -400,5 +427,8 @@ angular.module('omr').component('quest', {
         'questService',
         'translationService',
         '$ionicModal',
+        'splashScreenService',
+        'stateService',
+        '$ionicPopup',
         QuestPageController]
 });
