@@ -3,8 +3,9 @@
 
 .omr-page-home__logo {
     width: 100%;
-    height: 50vh;
-    padding-top: 10vh;
+    height: 54vh;
+    padding-top: 12vh;
+    margin-bottom: 15vh;
 
     img {
         height: 100%;
@@ -13,10 +14,34 @@
 
 .omr-page-home__action {
     margin-top: 10vh;
-    padding-right: 5vh;
-    padding-left: 5vh;
+    position: relative;
 
-    button {
-        background-color: rgba($color-black-1, 0.5);
+    .omr-page-home__action--border {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 5px;
+        width: 100%;;
+    }
+
+    .omr-page-home__action--button {
+        text-align: center;
+        background-color: transparent;
+        color: $color-white-1;
+        text-shadow: 0px 0px 10px rgba(150, 150, 150, 1);
+        border: none;
+        height: 13vh;
+        width: 60vw;
+        position: absolute;
+        top: 50%;
+        margin-top: -5vh;
+        left: 50%;
+        margin-left: -30vw;
+        font-size: 40px;
+        font-family: $font-default;
+
+        &:active {
+            color: $color-brown-1;
+        }
     }
 }
