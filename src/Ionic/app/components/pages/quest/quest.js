@@ -96,7 +96,8 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             scene_id: scene.scene_id,
             title: scene.title[_questSelectedLanguage],
             text: scene.text[_questSelectedLanguage],
-            actions: []
+            actions: [],
+            on_die_events: scene.on_die_events
         };
 
         if (scene.type === 'DECISION') {
@@ -237,7 +238,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         _raiseEvents(events);
     }
 
-    function _raiseEvents(events) {
+    function _raiseEvents(events, isFromDieTrigger) {
         _showNotificationsForEvents(events);
 
         events.forEach(function (e) {
@@ -263,6 +264,10 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
                 _eventGameOver(e);
             }
         });
+
+        if(self.hero.attributes.health < 1 && !isFromDieTrigger) {
+            _raiseEvents(self.currentScene.on_die_events, true);
+        }
     }
 
     function _eventGameOver(e) {
