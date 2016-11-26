@@ -122,7 +122,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     function _filterRequireAttributeAction(action) {
         if (action.require_attribute_value) {
             for (var attr in action.require_attribute_value) {
-                if (self.hero.attributes[attr].current < action.require_attribute_value[attr]) {
+                if (self.hero.attributes[attr] < action.require_attribute_value[attr]) {
                     return false;
                 }
             }
