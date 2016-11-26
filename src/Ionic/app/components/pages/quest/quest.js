@@ -135,12 +135,13 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         var showAction = true;
 
         if (action.require_items.length) {
-            action.require_items.forEach(function (itemId) {
-                var notFound = self.hero.items.filter(function (i) {
-                    return i.item_id == itemId && i.quantity > 0;
-                }).length == 0;
+            action.require_items.forEach(function (requiredItem) {
+                var haveItem = !!self.hero.items.find(function(heroItem) {
+                    return heroItem.item_id === requiredItem.item_id
+                        && heroItem.quantity >= requiredItem.quantity;
+                });
 
-                if (notFound) {
+                if (!haveItem) {
                     showAction = false;
                 }
             });
