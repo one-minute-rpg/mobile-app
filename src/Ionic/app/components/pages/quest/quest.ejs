@@ -56,7 +56,9 @@
         <div class="omr-border"></div>
         <div class="omr-page-quest__quest-bar__item">
             <omr-configurations></omr-configurations>
-            <span class="omr-page-quest__quest-bar__item--text">Config</span>
+            <span class="omr-page-quest__quest-bar__item--text">
+                {{$ctrl.TRANSLATIONS.CONFIG}}
+            </span>
         </div>
         <div class="omr-page-quest__quest-bar__item">
             <% include ../../shared/icons/heart.ejs %>
@@ -66,11 +68,15 @@
         </div>
         <div class="omr-page-quest__quest-bar__item" ng-click="$ctrl.openHeroItensModal()">
             <% include ../../shared/icons/potion.ejs %>
-            <span class="omr-page-quest__quest-bar__item--text">Itens</span>
+            <span class="omr-page-quest__quest-bar__item--text">
+                {{$ctrl.TRANSLATIONS.ITEMS}}
+            </span>
         </div>
-        <div class="omr-page-quest__quest-bar__item">
+        <div class="omr-page-quest__quest-bar__item" ng-click="$ctrl.openHeroStatusModal()">
             <% include ../../shared/icons/character.ejs %>
-            <span class="omr-page-quest__quest-bar__item--text">Status</span>
+            <span class="omr-page-quest__quest-bar__item--text">
+                {{$ctrl.TRANSLATIONS.STATUS}}
+            </span>
         </div>
     </div>
     <omr-loader></omr-loader>

@@ -1,0 +1,59 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-modal-hero-status {
+    .omr-modal-hero-status--icon {
+        text-align: center;
+        margin-top: 10px;
+
+        svg {
+            fill: $color_white_1;
+            height: 30vh;
+        }
+    }
+
+    .omr-modal-hero-status__status-list {
+        position: relative;
+        padding: 20px;
+
+        .omr-modal-hero-status__status-list__status {
+            .omr-modal-hero-status__status-list__status__content {
+                position: relative;
+                height: 40px;
+                margin: 10px;
+                padding: 5px;
+                margin-bottom: 20px;
+                border-bottom: 2px solid $color-brown-3;
+
+                .omr-modal-hero-status__status-list__status--name {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    padding-right: 5px;
+                    padding-left: 5px;
+                    font-size: 20px;
+                    font-family: $font-default;
+                    background-color: $color-black-1;
+                    color: $color-dark-golden;
+                }
+
+                .omr-modal-hero-status__status-list__status__value {
+                        position: absolute;
+                        bottom: -6px;
+                        right: 4px;
+                        height: 50px;
+                        border: 3px solid #734a00;
+                        padding: 14px;
+                        border-radius: 29px;
+                        background-color: $color-black-1;
+
+                    .omr-modal-hero-status__status-list__status__value--text {
+                        font-size: 34px;
+                    }
+                }
+
+
+            }
+        }
+    }
+}

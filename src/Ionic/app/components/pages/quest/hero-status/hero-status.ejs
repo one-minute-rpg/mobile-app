@@ -1,0 +1,28 @@
+<ion-modal-view>
+    <omr-modal-header title="TRANSLATIONS.STATUS" on-close="closeModalHeroStatus()"></omr-modal-header>
+
+    <omr-modal-content>
+       <div class="omr-modal-hero-status">
+           <div class="omr-modal-hero-status--icon">
+               <% include ../../../shared/icons/character.ejs %>
+           </div>
+           <div class="omr-modal-hero-status__status-list">
+               <div class="omr-modal-hero-status__status-list__status"
+                    ng-repeat="s in statusList"
+                    ng-click="onSelectStatus(s)">
+                    <div class="omr-modal-hero-status__status-list__status__content">
+                        <span class="omr-modal-hero-status__status-list__status--name">
+                            {{s.name}}
+                        </span>
+                        <div class="omr-modal-hero-status__status-list__status__value">
+                            <span class="omr-modal-hero-status__status-list__status__value--text">
+                                {{s.value}}
+                            </span>
+                        </div>
+                        
+                    </div>
+               </div>
+           </div>
+       </div>
+    </omr-modal-content>
+</ion-modal-view>

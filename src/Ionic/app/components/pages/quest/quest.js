@@ -15,6 +15,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     self.TRANSLATIONS = {};
     self.onChoseAction = _onChoseAction;
     self.openHeroItensModal = _openModalHeroItens;
+    self.openHeroStatusModal = _openModalHeroStatus;
     self.$onInit = _init;
 
     var _quest = {};
@@ -26,6 +27,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             _loadQuest();
             $timeout(function () {
                 self.ready = true;
+                splashScreenService.hide();
             }, 1000);
         });
     }
@@ -497,6 +499,64 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
     $modalHeroItens.closeModalHeroItens = function () {
         $modalHeroItens.$modal.hide();
+    }
+
+    /************************
+     * HERO STATUS
+     ************************/
+    var $modalHeroStatus = $scope;
+    function _openModalHeroStatus() {
+        $modalHeroStatus.TRANSLATIONS = self.TRANSLATIONS;
+        $modalHeroStatus.statusList = [
+            {
+                "name": self.TRANSLATIONS.HEALTH,
+                "value": self.hero.attributes.health,
+                "about": self.TRANSLATIONS.ABOUT_HEALTH
+            },
+            {
+                "name": self.TRANSLATIONS.STRENGTH,
+                "value": self.hero.attributes.strength,
+                "about": self.TRANSLATIONS.ABOUT_STRENGTH
+            },
+            {
+                "name": self.TRANSLATIONS.AGILITY,
+                "value": self.hero.attributes.agility,
+                "about": self.TRANSLATIONS.ABOUT_AGILITY
+            },
+            {
+                "name": self.TRANSLATIONS.INTELLIGENCE,
+                "value": self.hero.attributes.intelligence,
+                "about": self.TRANSLATIONS.ABOUT_INTELLIGENCE
+            }
+        ];
+
+        $modalHeroStatus.onSelectStatus = function(s) {
+            var popup = {
+                title: s.name,
+                template: s.about,
+                scope: $scope,
+                buttons: [
+                    {
+                        text: self.TRANSLATIONS.OK,
+                        type: 'button-positive'
+                    }
+                ]
+            };
+
+            $ionicPopup.show(popup);
+        }
+
+        $ionicModal.fromTemplateUrl('components/pages/quest/hero-status/hero-status.html', {
+            scope: $modalHeroStatus,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $modalHeroStatus.$modal = modal;
+            $modalHeroStatus.$modal.show();
+        });
+    }
+
+    $modalHeroStatus.closeModalHeroStatus = function() {
+        $modalHeroStatus.$modal.hide();
     }
 }
 
