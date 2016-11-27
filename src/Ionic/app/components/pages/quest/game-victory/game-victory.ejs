@@ -1,0 +1,22 @@
+<ion-modal-view>
+    <omr-modal-header title="TRANSLATIONS.VICTORY" on-close="goToHome()"></omr-modal-header>
+
+    <omr-modal-content>
+        <div class="omr-game-victory-modal">
+            <div class="omr-game-victory-modal--content">
+                <div class="omr-game-victory-modal--img">
+
+                </div>
+                <div class="omr-game-victory-modal__text text-justify">
+                    {{text}}
+                </div>
+                <div class="omr-game-victory-modal__buttons">
+                    <button class="omr-button"
+                            ng-click="goToHome()">
+                        {{TRANSLATIONS.BACK_TO_HOME}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </omr-modal-content>
+</ion-modal-view>

@@ -191,13 +191,14 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
      * NOTIFICATIONS
      ************************/
     var _lastNotificationTimer = null;
+    var _invalidTypesForNotification = ['GAME_OVER', 'VICTORY'];
 
     function _showNotificationsForEvents(events) {
         if (!events || !events.length) return;
 
         var notifications = events
             .filter(function (e) {
-                var typeIsValid = e.type !== 'GAME_OVER';
+                var typeIsValid = _invalidTypesForNotification.indexOf(e.type) >= 0;
                 var hasText = !!e.text && !!e.text[_questSelectedLanguage];
 
                 return typeIsValid && hasText;
@@ -266,11 +267,18 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             else if (e.type === 'GAME_OVER') {
                 _eventGameOver(e);
             }
+            else if (e.type === 'VICTORY') {
+                _eventVictory(e);
+            }
         });
 
         if(self.hero.attributes.health < 1 && !isFromDieTrigger) {
             _raiseEvents(self.currentScene.on_die_events, true);
         }
+    }
+
+    function _eventVictory(e) {
+        _openModalVictory(e);
     }
 
     function _eventGameOver(e) {
@@ -389,6 +397,32 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             __done();
         }
     }
+
+    /************************
+     * VICTORY
+     ************************/
+    var $modalVictoryScope = $scope;
+    $modalVictoryScope.$modal = null;
+
+    $modalVictoryScope.goToHome = function () {
+        $modalVictoryScope.$modal.hide();
+        $modalVictoryScope.$modal.remove();
+        _goHome();
+    }
+
+    function _openModalVictory(event) {
+        $modalVictoryScope.TRANSLATIONS = self.TRANSLATIONS;
+        $modalVictoryScope.text = event.text ? event.text[_questSelectedLanguage] : '';
+
+        $ionicModal.fromTemplateUrl('components/pages/quest/game-victory/game-victory.html', {
+            scope: $modalVictoryScope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $modalVictoryScope.$modal = modal;
+            $modalVictoryScope.$modal.show();
+        });
+    }
+
 
     /************************
      * GAME OVER
