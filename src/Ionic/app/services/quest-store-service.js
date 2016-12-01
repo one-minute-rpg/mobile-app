@@ -1,22 +1,35 @@
 /**
  * Created by ben-hur on 15/08/2016.
  */
-function OmrQuestStoreService($q, $timeout, translationService) {
+function OmrQuestStoreService($q, $http, $timeout, translationService, API) {
 
     var $$quests = [
         {
             id: '1ba6fc3409118d229875336a5e518f0d',
             title: {
-                'PT_BR': 'Feiticeiro da montanha de fogo',
-                'EN_US': 'The wizard of the mountain of fire'
+                'pt_br': 'Feiticeiro da montanha de fogo',
+                'pt_br': 'The wizard of the mountain of fire'
             }
         }
     ];
 
     return {
+        search: function(term) {
+            var currentTranslation = translationService.getCurrentTranslations();
+            return $http.get(API.URL + '/quest/search?q=' + term)
+                .then(function(response) {
+                    return response.data.map(function(q){
+                        return {
+                            id: q.id,
+                            title: q.title[currentTranslation.$NAME],
+                            image: q.image
+                        }
+                    });
+                });
+        },
+
         getDownloadedQuests: function () {
             var d = $q.defer();
-
             var currentTranslation = translationService.getCurrentTranslations();
 
             //TODO:BHR:MOCK
@@ -34,4 +47,10 @@ function OmrQuestStoreService($q, $timeout, translationService) {
     }
 }
 
-angular.module('omr').factory('questStoreService', ['$q', '$timeout', 'translationService', OmrQuestStoreService]);
+angular.module('omr').factory('questStoreService', [
+    '$q', 
+    '$http',
+    '$timeout', 
+    'translationService',
+    'API',
+     OmrQuestStoreService]);

@@ -1,25 +1,71 @@
 <div class="omr-page-home__store">
-    <omr-page-header
-        title="$ctrl.TRANSLATIONS.QUEST_STORE"
-        can-go-back="true"
-        go-back-handler="$ctrl.goHome()">
+    <omr-page-header title="$ctrl.TRANSLATIONS.QUEST_STORE" can-go-back="true" go-back-handler="$ctrl.goHome()">
     </omr-page-header>
 
+    <div class="omr-page-home__store__search">
+        <div class="omr-page-home__store__search--icon" ng-click="$ctrl.search()">
+            <% include ../../../shared/icons/search.ejs %>
+        </div>
+        <input type="text" 
+               class="omr-page-home__store__search--input"
+               maxlength="30"
+               ng-model="$ctrl.query" />
+    </div>
+
+    <div class="omr-page-home__store__tabs">
+        <div class="omr-page-home__store__tabs__tab" 
+             ng-class="{'selected': $ctrl.tabs.downloaded.selected}"
+             ng-click="$ctrl.selectTab('downloaded')">
+            <% include ../../../shared/icons/books.ejs %>
+            <div class="omr-page-home__store__tabs__tab--text">
+                {{$ctrl.TRANSLATIONS.YOUR_QUESTS}}
+            </div>
+        </div>
+        <div class="omr-page-home__store__tabs__tab" 
+             ng-class="{'selected': $ctrl.tabs.store.selected}"
+             ng-click="$ctrl.selectTab('store')">
+            <% include ../../../shared/icons/cart.ejs %>
+            <div class="omr-page-home__store__tabs__tab--text">
+                {{$ctrl.TRANSLATIONS.QUEST_STORE}}
+            </div>
+        </div>
+    </div>
+
+    
     <div class="omr-page-home__store__quests">
-        <div class="omr-page-home__store__quests__quest"
-             ng-repeat="quest in $ctrl.downloadedQuests track by quest.id"
-             >
-             <div class="omr-page-home__store__quests__quest__content">
-                 <div class="omr-page-home__store__quests__quest--cover text-center">
+        <!-- Downloaded -->
+        <div class="omr-page-home__store__quests__quest" 
+             ng-repeat="quest in $ctrl.tabs.downloaded.quests track by quest.id" 
+             ng-show="$ctrl.tabs.downloaded.selected">
+            <div class="omr-page-home__store__quests__quest__content">
+                <div class="omr-page-home__store__quests__quest--cover text-center">
                     <img ng-src="resources/$quests/{{quest.id}}/img/cover.jpg">
                 </div>
                 <div class="omr-page-home__store__quests__quest--title text-center">
                     {{ quest.title }}
                 </div>
-             </div>
+            </div>
             <div class="omr-page-home__store__quests__quest__actions">
                 <button ng-click="$ctrl.play(quest)">
-                    Iniciar
+                    {{$ctrl.TRANSLATIONS.START}}
+                </button>
+            </div>
+        </div>
+        <!-- Store -->
+        <div class="omr-page-home__store__quests__quest" 
+             ng-repeat="quest in $ctrl.tabs.store.quests track by quest.id" 
+             ng-show="$ctrl.tabs.store.selected">
+            <div class="omr-page-home__store__quests__quest__content">
+                <div class="omr-page-home__store__quests__quest--cover text-center">
+                    <img ng-src="{{quest.image}}">
+                </div>
+                <div class="omr-page-home__store__quests__quest--title text-center">
+                    {{ quest.title }}
+                </div>
+            </div>
+            <div class="omr-page-home__store__quests__quest__actions">
+                <button ng-click="$ctrl.download(quest)">
+                    {{$ctrl.TRANSLATIONS.DOWNLOAD}}
                 </button>
             </div>
         </div>

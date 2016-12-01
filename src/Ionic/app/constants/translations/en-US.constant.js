@@ -1,5 +1,5 @@
 angular.module('omr').constant('TRANSLATION_EN_US', {
-    $NAME: 'EN_US',
+    $NAME: 'en_us',
     CONFIGURATIONS: 'Configurations',
     LANGUAGE: 'Language',
     SOUND: 'Sound',
@@ -32,5 +32,8 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     ABOUT_STRENGTH: 'This is your physical ability. Some actions only appear if you have enough strength for it, such as knocking down a door.',
     ABOUT_AGILITY: 'This is your dexterity. Some actions only appear if you have enough agility for it, such as escaping from an arrow in your direction.',
     ABOUT_INTELLIGENCE: 'This is your mental capacity and instincts. Some actions only appear if you have enough intelligence for her, such as deciphering a puzzle or noticing a secret door, for example.',
-    "VICTORY": "Victory"
+    VICTORY: "Victory",
+    YOUR_QUESTS: "Your Quests",
+    START: "Iniciar",
+    DOWNLOAD: "Baixar"
 });

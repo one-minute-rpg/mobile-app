@@ -1,7 +1,74 @@
 @import './app/styles/_mixins';
 @import './app/styles/_values';
 
+$border: 2px solid $color-brown-3;
+
 .omr-page-home__store {
+    .omr-page-home__store__search {
+        position: relative;
+        border-bottom: $border;
+        height: 50px;
+        padding-top: 7px;
+
+        .omr-page-home__store__search--icon {
+            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            
+            .omr-icon {
+                height: 30px;
+                fill: $color-white-1;
+            }
+        }
+
+        .omr-page-home__store__search--input {
+            border-bottom: 1px solid $color-brown-3;
+            background-color: transparent;
+            position: relative;
+            width: 80%;
+            margin-right: 50px;
+            margin-left: 15px;
+            color: $color-brown-1;
+        }
+    }
+
+    .omr-page-home__store__tabs {
+        border-bottom: $border;
+        height: 60px;
+        padding-top: 5px;
+
+        .omr-page-home__store__tabs__tab {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 100%;
+            text-align: center;
+            opacity: 0.3;
+
+            .omr-page-home__store__tabs__tab--text {
+                color: $color-white-1;
+                margin-top: 28px;
+            }
+
+            .omr-icon {
+                position: absolute;
+                height: 30px;
+                width: 30px;
+                fill: $color-white-1;
+                top: 2px;
+                left: 50%;
+                margin-left: -20px;
+                
+            }
+
+            &.selected {
+                opacity: 1;
+            }
+        }
+    }
+
+
     .omr-page-home__store__quests {
         margin: 15px 10px;
 

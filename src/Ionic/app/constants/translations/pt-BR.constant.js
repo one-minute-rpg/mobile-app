@@ -1,5 +1,5 @@
 angular.module('omr').constant('TRANSLATION_PT_BR', {
-    $NAME: 'PT_BR',
+    $NAME: 'pt_br',
     CONFIGURATIONS: 'Configurações',
     LANGUAGE: 'Idioma',
     SOUND: 'Som',
@@ -32,5 +32,8 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     ABOUT_STRENGTH: 'Esta é sua capacidade física. Algumas ações só aparecem se você tiver força suficiente para ela, como derrubar uma porta, por exemplo.',
     ABOUT_AGILITY: 'Esta é a sua destreza. Algumas ações só aparecem se você tiver agilidade suficiente para ela, como escapar de uma flecha em sua direção, por exemplo.',
     ABOUT_INTELLIGENCE: 'Esta é sua capacidade mental e instintos. Algumas ações só aparecem se você tiver inteligência suficiente para ela, como decifrar um enigma ou perceber uma porta secreta, por exemplo.',
-    "VICTORY": "Vitória"
+    VICTORY: "Vitória",
+    YOUR_QUESTS: "Suas Aventuras",
+    START: "Iniciar",
+    DOWNLOAD: "Baixar"
 });
