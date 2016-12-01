@@ -1,4 +1,4 @@
-function QuestPageController($scope, $stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, $ionicModal, splashScreenService, stateService, $ionicPopup) {
+function QuestPageController($scope, $stateParams, $timeout, $location, platformService, loaderService, soundService, SOUNDS, questService, translationService, $ionicModal, splashScreenService, stateService, alertService) {
     var self = this;
 
     self.hero = {
@@ -382,10 +382,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         }
 
         if (params && params.needConfirmation) {
-            var confirmPopup = $ionicPopup.confirm({
-                title: self.TRANSLATIONS.ADVENTURE,
-                template: self.TRANSLATIONS.BACK_TO_HOME + '?'
-            });
+            var confirmPopup = alertService.confirm(self.TRANSLATIONS.ADVENTURE, self.TRANSLATIONS.BACK_TO_HOME + '?')
 
             confirmPopup.then(function (res) {
                 if (res) {
@@ -520,7 +517,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             popup.template = self.TRANSLATIONS.WANT_TO_USE_ITEM + ' <b>' + item.name + '</b>?';
         }
 
-        var myPopup = $ionicPopup.show(popup);
+        alertService.custom(popup);
     }
 
     $modalHeroItens.requestUseItem = function(item) {
@@ -565,19 +562,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         ];
 
         $modalHeroStatus.onSelectStatus = function(s) {
-            var popup = {
-                title: s.name,
-                template: s.about,
-                scope: $scope,
-                buttons: [
-                    {
-                        text: self.TRANSLATIONS.OK,
-                        type: 'button-positive'
-                    }
-                ]
-            };
-
-            $ionicPopup.show(popup);
+            alertService.alert(s.name, s.about);
         }
 
         $ionicModal.fromTemplateUrl('components/pages/quest/hero-status/hero-status.html', {
@@ -610,6 +595,6 @@ angular.module('omr').component('quest', {
         '$ionicModal',
         'splashScreenService',
         'stateService',
-        '$ionicPopup',
+        'alertService',
         QuestPageController]
 });

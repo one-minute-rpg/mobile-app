@@ -6,7 +6,6 @@ $border: 2px solid $color-brown-3;
 .omr-page-home__store {
     .omr-page-home__store__search {
         position: relative;
-        border-bottom: $border;
         height: 50px;
         padding-top: 7px;
 
@@ -19,6 +18,10 @@ $border: 2px solid $color-brown-3;
             .omr-icon {
                 height: 30px;
                 fill: $color-white-1;
+
+                &:active {
+                    fill: $color-dark-golden;
+                }
             }
         }
 

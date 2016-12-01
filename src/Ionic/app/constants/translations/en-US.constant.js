@@ -35,5 +35,7 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     VICTORY: "Victory",
     YOUR_QUESTS: "Your Quests",
     START: "Iniciar",
-    DOWNLOAD: "Baixar"
+    DOWNLOAD: "Baixar",
+    NO_INTERNET_CONNECTION: 'Ops, no internet connection =(',
+    INTERNET: 'Internet'
 });

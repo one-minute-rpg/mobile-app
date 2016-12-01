@@ -1,4 +1,4 @@
-function HomeStoreController(translationService, stateService, questStoreService, loaderService, $timeout) {
+function HomeStoreController(translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService) {
     var self = this;
 
     self.loadingQuests = false;
@@ -42,18 +42,28 @@ function HomeStoreController(translationService, stateService, questStoreService
                 });
             },
             search: function(params) {
-                self.loadingQuests = true;
-                if(params.reset) {
-                    this.quests = [];
-                }
+                var self = this;
 
-                $timeout(function(){
-                    questStoreService.search(params.query)
-                        .then(function (quests) {
-                            self.tabs.store.quests = quests;
-                            self.loadingQuests = false;
-                        });
-                }, 1000);
+                networkService.requestOnline()
+                    .then(function(isOnline){
+                        if(isOnline) {
+                            self.loadingQuests = true;
+                            if(params.reset) {
+                                self.quests = [];
+                            }
+
+                            $timeout(function(){
+                                questStoreService.search(params.query)
+                                    .then(function (quests) {
+                                        self.tabs.store.quests = quests;
+                                        self.loadingQuests = false;
+                                    })
+                                    .catch(function(err) {
+                                        alertService.alert('Ops =(', 'Ocorreu um erro ao buscar as aventuras.');
+                                    });
+                            }, 1000);
+                        }
+                    });
             }
         }
     };
@@ -105,5 +115,7 @@ angular.module('omr').component('homeStore', {
         'questStoreService', 
         'loaderService', 
         '$timeout',
+        'networkService',
+        'alertService',
         HomeStoreController]
 });
