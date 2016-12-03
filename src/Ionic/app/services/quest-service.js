@@ -6,13 +6,19 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
         return 'SAVE_GAME_QUEST_' + questId;
     }
 
-
     return {
         getQuest: function (questId) {
-            return $http.get('resources/$quests/' + questId + '/quest.json')
-                .then(function(questData){
-                    return questData.data;
-                });
+            var d = $q.defer();
+
+            try {
+                var keyFull = 'QUEST_FULL_' + questId;
+                var quest = localStorageService.getObject(keyFull);
+                d.resolve(quest);
+            } catch (error) {
+                d.reject(error);
+            }
+
+            return d.promise;
         },
 
         saveGame: function(questId, character, currentSceneId) {

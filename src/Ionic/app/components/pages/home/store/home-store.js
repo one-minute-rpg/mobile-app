@@ -10,7 +10,7 @@ function HomeStoreController($rootScope, translationService, stateService, quest
         downloaded: {
             selected: true,
             quests: [],
-            noMoreDataToLoad: false,
+            noMoreDataToLoad: true,
             search: function (params) {
                 var _this = this;
                 questStoreService.getDownloadedQuests()
@@ -19,6 +19,9 @@ function HomeStoreController($rootScope, translationService, stateService, quest
                         _this.noMoreDataToLoad = true;
                         self.loading = false;
                         $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                    })
+                    .catch(function(err) {
+                        alertService.alert('Ops =(', self.TRANSLATIONS.ERROR_TO_FIND_QUESTS);
                     });
             }
         },
@@ -73,6 +76,21 @@ function HomeStoreController($rootScope, translationService, stateService, quest
     self.selectTab = _onSelectTab;
     self.search = _search;
     self.nextPage = _nextPage;
+    self.download = _download;
+
+    function _download(quest) {
+        loaderService.show();
+
+        questStoreService.download(quest.id)
+            .then(function(res) {
+                console.log(res);
+                loaderService.hide();
+            })
+            .catch(function(err) {
+                console.error(err);
+                loaderService.hide();
+            });
+    }
 
     function _search() {
         self.loading = true;
@@ -126,7 +144,7 @@ function HomeStoreController($rootScope, translationService, stateService, quest
     }
 
     function _play(quest) {
-        stateService.goToPlay(quest.id);
+        stateService.goToPlay(quest.quest_id);
     }
 
     function _init() {

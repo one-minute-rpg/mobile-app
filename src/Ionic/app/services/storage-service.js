@@ -40,6 +40,15 @@ function OmrLocalStorageService($window) {
         },
         remove: function(key) {
             $window.localStorage.removeItem(key);
+        },
+        getAllKeys: function() {
+            var keys = [];
+
+            for(var k in $window.localStorage) {
+                keys.push(k);
+            }
+
+            return keys;
         }
     };
 }
