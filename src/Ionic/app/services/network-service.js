@@ -1,6 +1,6 @@
 function NetworkService($q, alertService, ENVIRONMENT, translationService) {
     function requestOnline() {
-        var result = false;
+        var result = true;
 
         if (ENVIRONMENT.RUNNING_ON_CORDOVA) {
             var networkState = navigator.connection.type;

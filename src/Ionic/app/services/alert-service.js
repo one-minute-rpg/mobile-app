@@ -20,8 +20,8 @@ function AlertService($q, $ionicPopup, translationService) {
 
     function confirm(title, message) {
         var confirmPopup = $ionicPopup.confirm({
-            title: self.TRANSLATIONS.ADVENTURE,
-            template: self.TRANSLATIONS.BACK_TO_HOME + '?'
+            title: title,
+            template: message
         });
 
         return confirmPopup;

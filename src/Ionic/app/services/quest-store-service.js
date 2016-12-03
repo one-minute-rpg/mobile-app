@@ -1,43 +1,39 @@
-/**
- * Created by ben-hur on 15/08/2016.
- */
 function OmrQuestStoreService($q, $http, $timeout, translationService, API) {
-
     var $$quests = [
         {
             id: '1ba6fc3409118d229875336a5e518f0d',
-            title: {
-                'pt_br': 'Feiticeiro da montanha de fogo',
-                'pt_br': 'The wizard of the mountain of fire'
-            }
+            title: 'The wizard of the mountain of fire',
+            language: 'en_us'
         }
     ];
 
     return {
-        search: function(term) {
-            var currentTranslation = translationService.getCurrentTranslations();
-            return $http.get(API.URL + '/quest/search?q=' + term)
+        search: function(term, page) {
+            return $http.get(API.URL + '/quest/search?q=' + term + '&page=' + page)
                 .then(function(response) {
-                    return response.data.map(function(q){
-                        return {
-                            id: q.id,
-                            title: q.title[currentTranslation.$NAME],
-                            image: q.image
-                        }
-                    });
+                    return {
+                        quests: response.data.quests.map(function(q){
+                            return {
+                                id: q.id,
+                                title: q.title,
+                                language: q.language,
+                                image: q.cover
+                            }
+                        }),
+                        noMoreData: response.data.noMoreData
+                    };
                 });
         },
 
         getDownloadedQuests: function () {
             var d = $q.defer();
-            var currentTranslation = translationService.getCurrentTranslations();
 
             //TODO:BHR:MOCK
             $timeout(function () {
                 d.resolve($$quests.map(function (q) {
                     return {
                         id: q.id,
-                        title: q.title[currentTranslation.$NAME]
+                        title: q.title
                     };
                 }));
             }, 1500);

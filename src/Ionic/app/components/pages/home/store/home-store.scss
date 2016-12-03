@@ -4,6 +4,12 @@
 $border: 2px solid $color-brown-3;
 
 .omr-page-home__store {
+    .omr-page-home__store--loader {
+        position: fixed;
+        bottom: 30px;
+        right: 10px;
+    }
+
     .omr-page-home__store__search {
         position: relative;
         height: 50px;
@@ -62,7 +68,12 @@ $border: 2px solid $color-brown-3;
                 top: 2px;
                 left: 50%;
                 margin-left: -20px;
-                
+
+                @include large-phone() {
+                    top: -9px;
+                    height: 40px;
+                    width: 40px;
+                }
             }
 
             &.selected {
@@ -71,9 +82,23 @@ $border: 2px solid $color-brown-3;
         }
     }
 
+    
 
     .omr-page-home__store__quests {
         margin: 15px 10px;
+        overflow-y: scroll;
+        height: 60vh;
+
+        @include large-phone() {
+            height: 65vh;
+        }
+
+        .omr-page-home__store__quests--scroll {
+            height: 60vh;
+            @include large-phone() {
+                height: 65vh;
+            }
+        }
 
         .omr-page-home__store__quests__quest {
             position: relative;
@@ -82,6 +107,7 @@ $border: 2px solid $color-brown-3;
             border: 2px solid $color-brown-3;
             @include border-radius(4px);
             overflow: hidden;
+            margin-bottom: 10px;
 
             .omr-page-home__store__quests__quest__content {
                 position: relative;

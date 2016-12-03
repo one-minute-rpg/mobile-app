@@ -37,5 +37,8 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     START: "Iniciar",
     DOWNLOAD: "Baixar",
     NO_INTERNET_CONNECTION: 'Ops, no internet connection =(',
-    INTERNET: 'Internet'
+    INTERNET: 'Internet',
+    ERROR_TO_FIND_QUESTS: 'There was an error fetching the quests.',
+    SEARCH: 'Search',
+    NO_RESULTS_FOUND: 'No results found =/.'
 });

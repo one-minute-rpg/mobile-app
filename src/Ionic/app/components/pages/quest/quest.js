@@ -19,7 +19,6 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     self.$onInit = _init;
 
     var _quest = {};
-    var _questSelectedLanguage = 'pt_br';
 
     function _init() {
         platformService.onReady(function () {
@@ -39,20 +38,6 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
                 _loadSavedGame();
                 loaderService.hide();
             });
-    }
-
-    function _configureSelectedLanguageForQuest() {
-        var currentTranslationKey = self.TRANSLATIONS.$NAME;
-        var questHasLanguage = _quest.availableLanguages.indexOf(currentTranslationKey) >= 0;
-
-        if (questHasLanguage) {
-            _questSelectedLanguage = currentTranslationKey;
-        }
-        else {
-            _questSelectedLanguage = _quest.availableLanguages[0];
-        }
-
-        _questSelectedLanguage = _questSelectedLanguage.toLowerCase();
     }
 
     function _loadSavedGame() {
@@ -96,8 +81,8 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
     function _formatScene(scene) {
         var formattedScene = {
             scene_id: scene.scene_id,
-            title: scene.title[_questSelectedLanguage],
-            text: scene.text[_questSelectedLanguage],
+            title: scene.title,
+            text: scene.text,
             actions: [],
             on_die_events: scene.on_die_events
         };
@@ -115,7 +100,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             .filter(_filterRequireItemAction)
             .map(function (act) {
                 var formattedAction = angular.copy(act);
-                formattedAction.text = act.text[_questSelectedLanguage];
+                formattedAction.text = act.text;
                 formattedAction._icon = _getActionIcon(act);
                 return formattedAction;
             });
@@ -199,14 +184,14 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
         var notifications = events
             .filter(function (e) {
                 var typeIsValid = _invalidTypesForNotification.indexOf(e.type) >= 0;
-                var hasText = !!e.text && !!e.text[_questSelectedLanguage];
+                var hasText = !!e.text;
 
                 return typeIsValid && hasText;
             })
             .map(function (e) {
                 return {
                     type: _getNotificationType(e),
-                    text: e.text[_questSelectedLanguage]
+                    text: e.text
                 };
             });
 
@@ -409,7 +394,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
     function _openModalVictory(event) {
         $modalVictoryScope.TRANSLATIONS = self.TRANSLATIONS;
-        $modalVictoryScope.text = event.text ? event.text[_questSelectedLanguage] : '';
+        $modalVictoryScope.text = event.text || '';
 
         $ionicModal.fromTemplateUrl('components/pages/quest/game-victory/game-victory.html', {
             scope: $modalVictoryScope,
@@ -441,7 +426,7 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
 
     function _openModalGameOver(event) {
         $modalGameOverScope.TRANSLATIONS = self.TRANSLATIONS;
-        $modalGameOverScope.text = event.text ? event.text[_questSelectedLanguage] : '';
+        $modalGameOverScope.text = event.text || '';
 
         $ionicModal.fromTemplateUrl('components/pages/quest/game-over/game-over.html', {
             scope: $modalGameOverScope,
@@ -466,8 +451,8 @@ function QuestPageController($scope, $stateParams, $timeout, $location, platform
             });
 
             var resultItem = angular.extend({}, item, questItem);
-            resultItem.name = resultItem.name[_questSelectedLanguage];
-            resultItem.description = resultItem.description[_questSelectedLanguage];
+            resultItem.name = resultItem.name;
+            resultItem.description = resultItem.description;
 
             return resultItem;
         });

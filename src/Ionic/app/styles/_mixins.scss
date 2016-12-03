@@ -24,3 +24,9 @@
         height: $width;
     }
 }
+
+@mixin large-phone {
+  @media (min-height: 600px) {
+    @content;
+  }
+}

@@ -37,5 +37,8 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     START: "Iniciar",
     DOWNLOAD: "Baixar",
     NO_INTERNET_CONNECTION: 'Ops, sem internet =(',
-    INTERNET: 'Internet'
+    INTERNET: 'Internet',
+    ERROR_TO_FIND_QUESTS: 'Ocorreu um erro ao buscar as aventuras.',
+    SEARCH: 'Pesquisa',
+    NO_RESULTS_FOUND: 'Nenhum resultado encontrado =/.'
 });

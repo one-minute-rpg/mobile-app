@@ -1,67 +1,66 @@
-function HomeStoreController(translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService) {
+function HomeStoreController($rootScope, translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService) {
     var self = this;
+    var currentListPage = -1;
 
-    self.loadingQuests = false;
     self.query = '';
     self.selectedTab = 'downloaded';
+    self.loading = false;
 
     self.tabs = {
         downloaded: {
             selected: true,
             quests: [],
-            onSelect: function() {
-                this.quests = [];
-                this.load();
-            },
-            load: function() {
-                self.loadingQuests = true;
-
-                $timeout(function(){
-                    questStoreService.getDownloadedQuests()
-                        .then(function (quests) {
-                            self.tabs.downloaded.quests = quests;
-                            self.loadingQuests = false;
-                        });
-                }, 1000);
-            },
-            search: function(params) {
-
+            noMoreDataToLoad: false,
+            search: function (params) {
+                var _this = this;
+                questStoreService.getDownloadedQuests()
+                    .then(function (quests) {
+                        _this.quests = quests;
+                        _this.noMoreDataToLoad = true;
+                        self.loading = false;
+                        $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                    });
             }
         },
         store: {
             selected: false,
             quests: [],
-            onSelect: function() {
-                this.quests = [];
-                this.load();
-            },
-            load: function() {
-                this.search({
-                    query: '',
-                    reset: true
-                });
-            },
-            search: function(params) {
-                var self = this;
+            noMoreDataToLoad: false,
+            search: function (params) {
+                var _this = this;
+
+                function $search() {
+                    var page = params.page || 0;
+                    if (page === 0) {
+                        _this.noMoreDataToLoad = false;
+                    }
+
+                    questStoreService.search(params.query, page)
+                        .then(function (result) {
+                            self.loading = false;
+                            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                            _this.quests = _this.quests.concat(result.quests);
+                            _this.noMoreDataToLoad = result.noMoreData;
+
+                            if (result.quests.length === 0 && page === 0) {
+                                alertService.alert(self.TRANSLATIONS.SEARCH, self.TRANSLATIONS.NO_RESULTS_FOUND);
+                            }
+                        })
+                        .catch(function (err) {
+                            self.loading = false;
+                            alertService.alert('Ops =(', self.TRANSLATIONS.ERROR_TO_FIND_QUESTS);
+                        });
+                };
 
                 networkService.requestOnline()
-                    .then(function(isOnline){
-                        if(isOnline) {
-                            self.loadingQuests = true;
-                            if(params.reset) {
-                                self.quests = [];
+                    .then(function (isOnline) {
+                        if (isOnline) {
+                            if (params.reset) {
+                                _this.quests = [];
+                                currentListPage = 0;
                             }
 
-                            $timeout(function(){
-                                questStoreService.search(params.query)
-                                    .then(function (quests) {
-                                        self.tabs.store.quests = quests;
-                                        self.loadingQuests = false;
-                                    })
-                                    .catch(function(err) {
-                                        alertService.alert('Ops =(', 'Ocorreu um erro ao buscar as aventuras.');
-                                    });
-                            }, 1000);
+                            $search();
                         }
                     });
             }
@@ -73,11 +72,26 @@ function HomeStoreController(translationService, stateService, questStoreService
     self.$onInit = _init;
     self.selectTab = _onSelectTab;
     self.search = _search;
+    self.nextPage = _nextPage;
 
     function _search() {
+        self.loading = true;
+
         self.tabs[self.selectedTab].search({
             query: self.query,
             reset: true
+        });
+    }
+
+    function _nextPage() {
+        var tab = self.tabs[self.selectedTab];
+        if (tab.noMoreDataToLoad) return;
+
+        self.loading = true;
+
+        tab.search({
+            query: self.query,
+            page: ++currentListPage
         });
     }
 
@@ -86,15 +100,29 @@ function HomeStoreController(translationService, stateService, questStoreService
     };
 
     function _onSelectTab(tabName) {
+        if (self.selectedTab === tabName) return;
+
         self.selectedTab = tabName;
         self.query = '';
+        _clearTabs();
 
-        for(var t in self.tabs) {
-            self.tabs[t].selected = false;
+        var tab = self.tabs[tabName];
+        tab.selected = true;
+        
+        if(tabName === 'downloaded') {
+            _nextPage();
         }
+    }
 
-        self.tabs[self.selectedTab].selected = true;
-        self.tabs[self.selectedTab].onSelect();
+    function _clearTabs() {
+        currentListPage = -1;
+
+        for (var t in self.tabs) {
+            var tab = self.tabs[t];
+            tab.selected = false;
+            tab.quests = [];
+            tab.noMoreDataToLoad = false;
+        }
     }
 
     function _play(quest) {
@@ -103,17 +131,18 @@ function HomeStoreController(translationService, stateService, questStoreService
 
     function _init() {
         self.TRANSLATIONS = translationService.getCurrentTranslations();
-        self.tabs.downloaded.load();
+        self.tabs.downloaded.search();
     }
 }
 
 angular.module('omr').component('homeStore', {
     templateUrl: 'components/pages/home/store/home-store.html',
     controller: [
-        'translationService', 
-        'stateService', 
-        'questStoreService', 
-        'loaderService', 
+        '$rootScope',
+        'translationService',
+        'stateService',
+        'questStoreService',
+        'loaderService',
         '$timeout',
         'networkService',
         'alertService',
