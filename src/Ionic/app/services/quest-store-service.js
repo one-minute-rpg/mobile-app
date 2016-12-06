@@ -33,10 +33,11 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
                     return {
                         quests: response.data.quests.map(function(q){
                             return {
-                                id: q.quest_id,
+                                quest_id: q.quest_id,
                                 title: q.title,
                                 language: q.language,
-                                cover: q.cover
+                                cover: q.cover,
+                                description: q.description
                             }
                         }),
                         noMoreData: response.data.noMoreData
@@ -72,6 +73,16 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
             }
 
             return d.promise;
+        },
+
+        removeFromDownloaded: function(questId) {
+            return $q.resolve((function(){
+                var keyFull = 'QUEST_FULL_' + questId;
+                var keyResume = 'QUEST_RESUME_' + questId;
+
+                localStorageService.remove(keyFull);
+                localStorageService.remove(keyResume);
+            })());
         }
     }
 }

@@ -1,6 +1,3 @@
-/**
- * Created by ben-hur on 15/08/2016.
- */
 function OmrQuestService($http, $q, $timeout, translationService, localStorageService) {
     function _getSaveGameKey(questId) {
         return 'SAVE_GAME_QUEST_' + questId;

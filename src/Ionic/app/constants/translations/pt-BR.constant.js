@@ -40,5 +40,6 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     INTERNET: 'Internet',
     ERROR_TO_FIND_QUESTS: 'Ocorreu um erro ao buscar as aventuras.',
     SEARCH: 'Pesquisa',
-    NO_RESULTS_FOUND: 'Nenhum resultado encontrado =/.'
+    NO_RESULTS_FOUND: 'Nenhum resultado encontrado =/.',
+    REMOVE: 'Remover'
 });

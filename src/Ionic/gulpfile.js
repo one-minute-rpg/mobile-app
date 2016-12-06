@@ -29,7 +29,8 @@ var paths = {
         './app/lib/animatecss/animate.css'
     ],
     vendorPack: [
-        './app/lib/rpg-awesome/**/*.*'
+        './app/lib/rpg-awesome/**/*.*',
+        './app/lib/font-awesome/**/*.*'
     ],
     ejs: [
         './app/**/*.ejs'

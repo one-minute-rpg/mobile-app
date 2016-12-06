@@ -2,13 +2,6 @@
     <omr-page-header title="$ctrl.TRANSLATIONS.QUEST_STORE" can-go-back="true" go-back-handler="$ctrl.goHome()">
     </omr-page-header>
 
-    <div class="omr-page-home__store__search">
-        <div class="omr-page-home__store__search--icon" ng-click="$ctrl.search()">
-            <% include ../../../shared/icons/search.ejs %>
-        </div>
-        <input type="text" class="omr-page-home__store__search--input" maxlength="30" ng-model="$ctrl.query" />
-    </div>
-
     <div class="omr-page-home__store__tabs">
         <div class="omr-page-home__store__tabs__tab" ng-class="{'selected': $ctrl.tabs.downloaded.selected}" ng-click="$ctrl.selectTab('downloaded')">
             <% include ../../../shared/icons/books.ejs %>
@@ -24,11 +17,19 @@
         </div>
     </div>
 
+    <div class="omr-page-home__store__search" ng-show="$ctrl.tabs.store.selected">
+        <div class="omr-page-home__store__search--icon" ng-click="$ctrl.search()">
+            <% include ../../../shared/icons/search.ejs %>
+        </div>
+        <input type="text" class="omr-page-home__store__search--input" maxlength="30" ng-model="$ctrl.query" />
+    </div>
+
 
     <div class="omr-page-home__store__quests">
         <!-- Downloaded -->
         <ion-scroll class="omr-page-home__store__quests--scroll" zooming="false" direction="y" ng-show="$ctrl.tabs.downloaded.selected">
-            <div class="omr-page-home__store__quests__quest" ng-repeat="quest in $ctrl.tabs.downloaded.quests track by quest.id">
+            <div class="omr-page-home__store__quests__quest" ng-repeat="quest in $ctrl.downloadedQuests track by quest.id"
+                 ng-click="$ctrl.openOptions(quest)">
                 <div class="omr-page-home__store__quests__quest__content">
                     <div class="omr-page-home__store__quests__quest--cover text-center">
                         <img ng-src="{{quest.cover}}">
@@ -37,10 +38,10 @@
                         {{ quest.title }}
                     </div>
                 </div>
-                <div class="omr-page-home__store__quests__quest__actions">
-                    <button ng-click="$ctrl.play(quest)">
-                    {{$ctrl.TRANSLATIONS.START}}
-                </button>
+                <div class="omr-page-home__store__quests__quest__infos">
+                    <div class="omr-page-home__store__quests__quest__infos__item">
+                        <i class="fa fa-star-o" aria-hidden="true"></i> 100
+                    </div>
                 </div>
             </div>
             <ion-infinite-scroll on-infinite="$ctrl.nextPage()" distance="1%" icon="none" ng-if="!$ctrl.tabs.downloaded.noMoreDataToLoad">
@@ -48,7 +49,9 @@
         </ion-scroll>
         <!-- Store -->
         <ion-scroll class="omr-page-home__store__quests--scroll" zooming="false" direction="y" ng-show="$ctrl.tabs.store.selected">
-            <div class="omr-page-home__store__quests__quest" ng-repeat="quest in $ctrl.tabs.store.quests track by quest.id">
+            <div class="omr-page-home__store__quests__quest" 
+                 ng-repeat="quest in $ctrl.tabs.store.quests track by quest.id"
+                 ng-click="$ctrl.openOptions(quest)">
                 <div class="omr-page-home__store__quests__quest__content">
                     <div class="omr-page-home__store__quests__quest--cover text-center">
                         <img ng-src="{{quest.cover}}">
@@ -57,10 +60,13 @@
                         {{ quest.title }}
                     </div>
                 </div>
-                <div class="omr-page-home__store__quests__quest__actions">
-                    <button ng-click="$ctrl.download(quest)">
-                        {{$ctrl.TRANSLATIONS.DOWNLOAD}}
-                    </button>
+                <div class="omr-page-home__store__quests__quest__infos">
+                    <div class="omr-page-home__store__quests__quest__infos__item" ng-if="quest.downloaded">
+                        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                    </div>
+                    <div class="omr-page-home__store__quests__quest__infos__item">
+                        <i class="fa fa-star-o" aria-hidden="true"></i> 100
+                    </div>
                 </div>
             </div>
             <ion-infinite-scroll on-infinite="$ctrl.nextPage()" distance="1%" icon="none" ng-if="!$ctrl.tabs.store.noMoreDataToLoad">

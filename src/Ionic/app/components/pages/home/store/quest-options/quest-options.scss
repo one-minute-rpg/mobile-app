@@ -1,0 +1,33 @@
+@import './app/styles/_mixins';
+@import './app/styles/_values';
+
+.omr-page-home__store__quest-options {
+
+    .omr-page-home__store__quest-options__cover {
+        height: 200px;
+        width: 100%;
+        background-size: cover;
+    }
+
+    .omr-page-home__store__quest-options__title {
+        margin-top: 10px;
+        color: $color-dark-golden;
+        text-align: center;
+        font-size: 20px;
+        font-family: $font-default;
+    }
+
+    .omr-page-home__store__quest-options__description {
+        color: $color-white-1;
+        padding: 10px;
+        text-align: justify;
+    }
+
+    .omr-page-home__store__quest-options__option-list {
+        text-align: center;
+        
+        .item {
+            border-color: $color-dark-golden;
+        }
+    }
+}

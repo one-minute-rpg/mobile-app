@@ -19,9 +19,13 @@ function AlertService($q, $ionicPopup, translationService) {
     }
 
     function confirm(title, message) {
+        var currentTranslation = translationService.getCurrentTranslations();
+
         var confirmPopup = $ionicPopup.confirm({
             title: title,
-            template: message
+            template: message,
+            cancelText: currentTranslation.NO,
+            okText: currentTranslation.YES
         });
 
         return confirmPopup;
@@ -50,7 +54,8 @@ function AlertService($q, $ionicPopup, translationService) {
 
     return {
         alert: alert,
-        confirm: confirm
+        confirm: confirm,
+        custom: custom
     };
 }
 

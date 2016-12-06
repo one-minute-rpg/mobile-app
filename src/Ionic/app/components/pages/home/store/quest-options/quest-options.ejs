@@ -1,0 +1,25 @@
+<ion-modal-view>
+    <omr-modal-header title="" on-close="questOptionsModal.onClose()"></omr-modal-header>
+
+    <omr-modal-content>
+        <div class="omr-page-home__store__quest-options">
+            <div class="omr-page-home__store__quest-options__cover"
+                 ng-style="{'background-image':'url({{questOptionsModal.quest.cover}})'}">
+
+            </div>
+            <div class="omr-page-home__store__quest-options__title">
+                {{questOptionsModal.title}}
+            </div>
+            <div class="omr-page-home__store__quest-options__description">
+                {{questOptionsModal.quest.description}}
+            </div>
+            <ion-list class="omr-page-home__store__quest-options__option-list">
+                <ion-item ng-repeat="option in questOptionsModal.options"
+                          ng-click="option.onSelect()"
+                          ng-if="!option.hide">
+                    {{option.text}}
+                </ion-item>
+            </ion-list>
+        </div>
+    </omr-modal-content>
+</ion-modal-view>

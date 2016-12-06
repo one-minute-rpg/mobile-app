@@ -40,5 +40,6 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     INTERNET: 'Internet',
     ERROR_TO_FIND_QUESTS: 'There was an error fetching the quests.',
     SEARCH: 'Search',
-    NO_RESULTS_FOUND: 'No results found =/.'
+    NO_RESULTS_FOUND: 'No results found =/.',
+    REMOVE: 'Remove'
 });
