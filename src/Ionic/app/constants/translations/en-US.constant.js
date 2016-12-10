@@ -41,5 +41,8 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     ERROR_TO_FIND_QUESTS: 'There was an error fetching the quests.',
     SEARCH: 'Search',
     NO_RESULTS_FOUND: 'No results found =/.',
-    REMOVE: 'Remove'
+    REMOVE: 'Remove',
+    CONTINUE: 'Continue',
+    WANT_TO_REMOVE_QUEST: 'Do you want to remove this quest?',
+    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Do you want to remove current save game and restart the quest?'
 });

@@ -31,6 +31,11 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
         getSavedGame: function(questId) {
             var key = _getSaveGameKey(questId);
             return localStorageService.getObject(key);
+        },
+
+        removeSavedGame: function(questId) {
+            var key = _getSaveGameKey(questId);
+            localStorageService.remove(key);
         }
     }
 }

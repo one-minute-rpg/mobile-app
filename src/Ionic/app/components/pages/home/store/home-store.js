@@ -1,4 +1,4 @@
-function HomeStoreController($rootScope, $scope, translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService, $ionicModal) {
+function HomeStoreController($rootScope, $scope, translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService, $ionicModal, questService) {
     var self = this;
     var currentListPage = -1;
 
@@ -93,19 +93,49 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
             $scope.modal.remove();
         };
 
-        var options = {
-            downloaded: [
+        var hasSaveGame = !!questService.getSavedGame(quest.quest_id);
+        var downloadedOptions = [];
+
+        var playQuest = function() {
+            $scope.modal.hide();
+            _play(quest);
+        }
+
+        if(quest.downloaded) {
+            downloadedOptions = downloadedOptions.concat([
                 {
-                    text: self.TRANSLATIONS.PLAY,
+                    text: self.TRANSLATIONS.START,
                     onSelect: function() {
-                        $scope.modal.hide();
-                        _play(quest);
+                        if(hasSaveGame) {
+                            alertService.confirm(self.TRANSLATIONS.REMOVE, self.TRANSLATIONS.WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART)
+                                .then(function(res) {
+                                    if(res) {
+                                        questService.removeSavedGame(quest.quest_id)
+                                        playQuest();
+                                    }
+                                });
+                        }
+                        else {
+                            playQuest();
+                        }
                     }
                 },
                 {
+                    text: self.TRANSLATIONS.CONTINUE,
+                    onSelect: function() {
+                        playQuest();
+                    },
+                    hide: !hasSaveGame
+                }
+            ]);
+        }
+
+        var options = {
+            downloaded: downloadedOptions.concat([
+                {
                     text: self.TRANSLATIONS.REMOVE,
                     onSelect: function() {
-                        alertService.confirm(self.TRANSLATIONS.REMOVE, 'Deseja realmente remover esta aventura?')
+                        alertService.confirm(self.TRANSLATIONS.REMOVE, self.TRANSLATIONS.WANT_TO_REMOVE_QUEST)
                             .then(function(res) {
                                 if(res) {
                                     $scope.modal.hide();
@@ -117,7 +147,7 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
                             });
                     }
                 }
-            ],
+            ]),
             store: [
                 {
                     text: self.TRANSLATIONS.DOWNLOAD,
@@ -126,16 +156,8 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
                         _download(quest);
                     },
                     hide: quest.downloaded
-                },
-                {
-                    text: self.TRANSLATIONS.PLAY,
-                    onSelect: function() {
-                        $scope.modal.hide();
-                        _play(quest);
-                    },
-                    hide: !quest.downloaded
-                },
-            ]
+                }
+            ].concat(downloadedOptions)
         };
 
         $scope.questOptionsModal = {
@@ -160,6 +182,10 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
     function _reloadDownloadedQuests() {
         return questStoreService.getDownloadedQuests()
             .then(function (quests) {
+                quests.forEach(function(q) {
+                    q.downloaded = true;
+                });
+
                 self.downloadedQuests = quests;
                 self.loading = false;
             })
@@ -258,5 +284,6 @@ angular.module('omr').component('homeStore', {
         'networkService',
         'alertService',
         '$ionicModal',
+        'questService',
         HomeStoreController]
 });

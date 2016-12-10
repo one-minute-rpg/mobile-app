@@ -41,5 +41,8 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     ERROR_TO_FIND_QUESTS: 'Ocorreu um erro ao buscar as aventuras.',
     SEARCH: 'Pesquisa',
     NO_RESULTS_FOUND: 'Nenhum resultado encontrado =/.',
-    REMOVE: 'Remover'
+    REMOVE: 'Remover',
+    CONTINUE: 'Continuar',
+    WANT_TO_REMOVE_QUEST: 'Deseja realmente remover esta aventura?',
+    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Deseja excluir o jogo salvo e começar do início?'
 });
