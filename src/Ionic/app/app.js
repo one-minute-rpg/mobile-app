@@ -1,3 +1,3 @@
 function MainCtrl() {}
 
-angular.module('omr', ['ionic']).controller('MainCtrl', MainCtrl);
+angular.module('omr', ['ionic', 'ionic.native']).controller('MainCtrl', MainCtrl);

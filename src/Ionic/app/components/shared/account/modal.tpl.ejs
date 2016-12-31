@@ -1,0 +1,18 @@
+<ion-modal-view>
+    <omr-modal-header title="TRANSLATIONS.ACCOUNT" on-close="cancel()"></omr-modal-header>
+
+    <omr-modal-content>
+        <div class="omr-account-modal">
+            <div class="omr-account-modal__section">
+                <div class="omr-account-modal__section--title">
+                    {{TRANSLATIONS.LOGIN_WITH}}
+                </div>
+                <div class="omr-account-modal__section__buttons">
+                    <div ng-click="facebookLogin()" class="omr-account-modal__section__buttons__button">
+                        <i class="fa fa-facebook-official"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </omr-modal-content>
+</ion-modal-view>

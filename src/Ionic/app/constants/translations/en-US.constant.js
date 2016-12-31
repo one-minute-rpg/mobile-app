@@ -44,5 +44,7 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     REMOVE: 'Remove',
     CONTINUE: 'Continue',
     WANT_TO_REMOVE_QUEST: 'Do you want to remove this quest?',
-    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Do you want to remove current save game and restart the quest?'
+    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Do you want to remove current save game and restart the quest?',
+    ACCOUNT: 'Account',
+    LOGIN_WITH: 'Login with'
 });

@@ -44,5 +44,7 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     REMOVE: 'Remover',
     CONTINUE: 'Continuar',
     WANT_TO_REMOVE_QUEST: 'Deseja realmente remover esta aventura?',
-    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Deseja excluir o jogo salvo e começar do início?'
+    WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Deseja excluir o jogo salvo e começar do início?',
+    ACCOUNT: 'Conta',
+    LOGIN_WITH: 'Efetuar login com'
 });

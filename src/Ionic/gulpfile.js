@@ -22,7 +22,8 @@ var paths = {
         '!./app/lib/**/*.*'
     ],
     vendorJs: [
-        './app/lib/ionic/js/ionic.bundle.js'
+        './app/lib/ionic/js/ionic.bundle.js',
+        './app/lib/ionic-native/dist/ionic.native.js'
     ],
     vendorCss: [
         './app/lib/ionic/css/ionic.min.css',
