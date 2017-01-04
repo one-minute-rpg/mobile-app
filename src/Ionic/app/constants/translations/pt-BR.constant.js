@@ -46,5 +46,23 @@ angular.module('omr').constant('TRANSLATION_PT_BR', {
     WANT_TO_REMOVE_QUEST: 'Deseja realmente remover esta aventura?',
     WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Deseja excluir o jogo salvo e começar do início?',
     ACCOUNT: 'Conta',
-    LOGIN_WITH: 'Efetuar login com'
+    LOGIN_WITH: 'Efetuar login com',
+    
+    EMAIL: 'E-mail',
+    ENTER: 'Entrar',
+    PASSWORD: 'Senha',
+    CONFIRM_PASSWORD: 'Confirmar Senha',
+    THE_PASSWORD_NOT_MATCH: 'As senhas não conferem.',
+    NAME: 'Nome',
+    CREATE: 'Criar',
+    DONT_HAVE_ACCOUNT_CREATE_ONE: 'Não tem conta? Crie uma =)',
+    CREATE_ACCOUNT: 'Criar Conta',
+    THE_FIELD_IS_REQUIRED: 'O campo é obrigatório.',
+    INVALID_EMAIL: 'E-mail inválido',
+    THE_FIELD_BETWEEN_2_AND_20_CHARS: 'O campo deve ter entre 2 e 20 caracteres.',
+    THE_FIELD_BETWEEN_6_AND_20_CHARS: 'O campo deve ter entre 6 e 20 caracteres.',
+    ACCOUNT_CREATE_SUCCESS: 'Conta criada com sucesso',
+    ERR_ACCOUNT_ALREADY_EXISTS: 'Esta conta já existe.',
+    ERR_INTERNAL: 'Ocorreu um erro inesperado. Tente novamente.',
+    ERR_LOGIN_INVALID: 'Login inválido'
 });

@@ -45,6 +45,12 @@
     height: 100%;
 }
 
+.form-input {
+    background-color: $color-black-1;
+    border: none;
+    border-bottom: 1px solid $color-dark-golden !important;
+}
 
-
-
+.form-input-messages {
+    color: $color-dark-golden;
+}

@@ -25,6 +25,10 @@ function OmrTranslationService(TRANSLATION_EN_US, TRANSLATION_PT_BR, AVAILABLE_T
 
         getAvailableTranslations: function() {
             return AVAILABLE_TRANSLATIONS;
+        },
+
+        getLocalizedText: function(code) {
+            return this.getCurrentTranslations()[code];
         }
     };
 }

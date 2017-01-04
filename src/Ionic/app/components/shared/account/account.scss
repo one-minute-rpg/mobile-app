@@ -30,4 +30,26 @@
             }
         }
     }
+
+    input {
+        width: 100%;
+        color: #fff;
+    }
+
+    button {
+        margin-top: 20px;
+    }
+
+    form {
+        margin: 20px;
+        margin-top: 10px;
+    }
+
+    &__form-login {
+        
+    }
+
+    &__form-register {
+        margin-top: 20px;
+    }
 }

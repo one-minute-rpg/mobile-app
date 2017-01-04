@@ -1,68 +1,58 @@
 /**
  * Created by ben-hur on 15/08/2016.
  */
-function OmrAccountService(localStorageService, API, $http, $q, $rootScope, EVENTS, $cordovaFacebook) {
+function OmrAccountService(localStorageService, API, $http, $q, $rootScope, EVENTS, translationService) {
     var LOGGED_USER_KEY = 'OmrAccountService_LOGGED_USER_KEY';
     
-    function facebookLogin() {
+    function login(email, password) {
         var d = $q.defer();
 
-        $cordovaFacebook.login(["email"]).then(function(res) {
-            // results
-            var formatedRes = {
-                email: res.authResponse.email,
-                accessToken: res.authResponse.accessToken,
-                userId: res.authResponse.userID
-            };
+        var data = {
+            email: email,
+            password: password
+        };
 
-            $http.post(API.URL + '/account/login-facebook', formatedRes)
-            .then(function() {
-                d.resolve();
+        $http.post(API.URL + '/account/login', data)
+            .then(function(res) {
+                localStorageService.setObject({
+                    loginToken: res.data.token
+                });
+
+                return true;
             })
-            .catch(function (err) {
-                d.reject(err);
+            .catch(function(err){
+                var message = translationService.getLocalizedText(err.data.code);
+
+                d.reject({
+                    message: message
+                });
             });
-        }, function(error) {
-            d.reject(err);
-        });
 
         return d.promise;
-    }
+    };
 
-    function isLogged() {
+    function createAccount(account) {
         var d = $q.defer();
 
-        _getLoginStatus()
-            .then(function(res) {
-                d.resolve(true);
+        $http.post(API.URL + '/account/create', account)
+            .then(function(token) {
+                return true;
             })
-            .catch(function(err) {
-                d.resolve(false);
-            })
+            .catch(function(err){
+                var message = translationService.getLocalizedText(err.data.code);
+
+                d.reject({
+                    message: message
+                });
+            });
 
         return d.promise;
-    }
-
-    function _getLoginStatus() {
-        return $cordovaFacebook.getLoginStatus()
-            .then(function(res) {
-                console.log(res);
-                return res;
-            });
-    }
-
-    function _getAccessToken() {
-        return $cordovaFacebook.getAccessToken()
-            .then(function(res) {
-                console.log(res);
-                return res;
-            });
     }
 
     return {
-        facebookLogin: facebookLogin,
-        isLogged: isLogged
-    }
+        login: login,
+        createAccount: createAccount
+    };
 }
 
-angular.module('omr').factory('accountService', ['localStorageService', 'API', '$http', '$q', '$rootScope', 'EVENTS', '$cordovaFacebook', OmrAccountService]);
+angular.module('omr').factory('accountService', ['localStorageService', 'API', '$http', '$q', '$rootScope', 'EVENTS', 'translationService', OmrAccountService]);

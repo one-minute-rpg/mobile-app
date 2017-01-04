@@ -23,7 +23,8 @@ var paths = {
     ],
     vendorJs: [
         './app/lib/ionic/js/ionic.bundle.js',
-        './app/lib/ionic-native/dist/ionic.native.js'
+        './app/lib/ionic-native/dist/ionic.native.js',
+        './app/lib/ngMessages/angular-messages.js'
     ],
     vendorCss: [
         './app/lib/ionic/css/ionic.min.css',

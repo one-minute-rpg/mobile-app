@@ -1,5 +1,6 @@
-function OmrAccountController($scope, $timeout, soundService, $ionicModal, translationService, splashScreenService, $window, EVENTS, accountService) {
+function OmrAccountController($scope, $timeout, soundService, $ionicModal, translationService, splashScreenService, $window, EVENTS, accountService, alertService) {
     var self = this;
+    var currentTranslations = translationService.getCurrentTranslations();
 
     var $modalScope = $scope;
 
@@ -16,7 +17,6 @@ function OmrAccountController($scope, $timeout, soundService, $ionicModal, trans
             scope: $modalScope,
             animation: 'slide-in-up'
         }).then(function (modal) {
-            $modalScope.facebookLogin = _facebookLogin;
             $modalScope.$modal = modal;
             $modalScope.$modal.show();
         });
@@ -34,18 +34,55 @@ function OmrAccountController($scope, $timeout, soundService, $ionicModal, trans
         }
     };
 
-    function _facebookLogin() {
-        accountService.facebookLogin()
-            .then(function (res) {
-                console.log(res);
+    function _createNewAccount(account) {
+        accountService.createAccount(account)
+            .then(function(res) {
+                alertService.alert(
+                    currentTranslations.ACCOUNT,
+                    currentTranslations.ACCOUNT_CREATE_SUCCESS);
             })
-            .catch(function (err) {
-                console.error(err);
+            .catch(function(err) {
+                alertService.alert(currentTranslations.ACCOUNT, err.message);
+            });
+    }
+
+    function _doLogin(email, password) {
+        accountService.login(email, password)
+            .then(function(res) {
+
+            })
+            .catch(function(err) {
+                alertService.alert('Conta', err.message);
             });
     }
 
     function _initModalData() {
         $modalScope.TRANSLATIONS = translationService.getCurrentTranslations();
+        $modalScope.forms = {};
+        $modalScope.newAccount = {
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        };
+
+        $modalScope.login = {
+            email: '',
+            password: ''
+        };
+
+        $modalScope.doLogin = function() {
+            _doLogin($modalScope.login.email, $modalScope.login.password);
+        };
+
+        $modalScope.createAccount = function() {
+            if($modalScope.newAccount.password != $modalScope.newAccount.confirmPassword) {
+                $modalScope.forms.registerForm.confirmPassword.$setValidity('confirmpass', false);
+                return;
+            }
+
+            _createNewAccount($modalScope.newAccount);
+        };
     }
 }
 
@@ -62,6 +99,7 @@ angular.module('omr').component('omrAccount', {
         '$window',
         'EVENTS',
         'accountService',
+        'alertService',
         OmrAccountController],
     bindings: {
     }

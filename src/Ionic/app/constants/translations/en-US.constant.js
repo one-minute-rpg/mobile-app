@@ -46,5 +46,23 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     WANT_TO_REMOVE_QUEST: 'Do you want to remove this quest?',
     WANT_TO_REMOVE_CURRENT_SAVE_GAME_AND_RESTART: 'Do you want to remove current save game and restart the quest?',
     ACCOUNT: 'Account',
-    LOGIN_WITH: 'Login with'
+    LOGIN_WITH: 'Login with',
+
+    EMAIL: 'E-mail',
+    ENTER: 'Enter',
+    PASSWORD: 'Password',
+    CONFIRM_PASSWORD: 'Confirm Password',
+    THE_PASSWORD_NOT_MATCH: 'The passwords not match',
+    NAME: 'Name',
+    CREATE: 'Create',
+    DONT_HAVE_ACCOUNT_CREATE_ONE: 'Don\'t have account? Create one!',
+    CREATE_ACCOUNT: 'Create Account',
+    THE_FIELD_IS_REQUIRED: 'The field is required',
+    INVALID_EMAIL: 'Invalid e-mail',
+    THE_FIELD_BETWEEN_2_AND_20_CHARS: 'The field must have between 2 and 20 characters',
+    THE_FIELD_BETWEEN_6_AND_20_CHARS: 'The field must have between 6 and 20 characters',
+    ACCOUNT_CREATE_SUCCESS: 'Account created',
+    ERR_ACCOUNT_ALREADY_EXISTS: 'This account already exists.',
+    ERR_INTERNAL: 'An unexpected error has occurred. Try again.',
+    ERR_LOGIN_INVALID: 'Invalid login'
 });

@@ -7,6 +7,10 @@
   "dependencies": {
     "ngstorage": "^0.3.11",
     "ngCordova": "^0.1.27-alpha",
-    "angular-svg-round-progressbar": "^0.4.8"
+    "angular-svg-round-progressbar": "^0.4.8",
+    "angular-messages": "^1.6.1"
+  },
+  "resolutions": {
+    "angular": ">= 1.0.8"
   }
 }

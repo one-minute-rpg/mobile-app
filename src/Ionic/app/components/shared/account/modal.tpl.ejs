@@ -5,12 +5,117 @@
         <div class="omr-account-modal">
             <div class="omr-account-modal__section">
                 <div class="omr-account-modal__section--title">
-                    {{TRANSLATIONS.LOGIN_WITH}}
+                    {{ TRANSLATIONS.ENTER | uppercase }}
                 </div>
-                <div class="omr-account-modal__section__buttons">
-                    <div ng-click="facebookLogin()" class="omr-account-modal__section__buttons__button">
-                        <i class="fa fa-facebook-official"></i>
-                    </div>
+                <div class="omr-account-modal__form-login">
+                    <form name="forms.loginForm">
+                        <div>
+                            <label for="">{{TRANSLATIONS.EMAIL}}</label>
+                            <input type="email" name="email" class="form-input" 
+                                ng-model="login.email" 
+                                ng-required="true">
+                            <div ng-messages="forms.loginForm.email.$error" 
+                                ng-if="forms.loginForm.email.$dirty"
+                                class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="email">{{TRANSLATIONS.INVALID_EMAIL}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="">{{TRANSLATIONS.PASSWORD}}</label>
+                            <input type="password" name="password" class="form-input" 
+                                ng-model="login.password" 
+                                ng-required="true" 
+                                ng-minlength="6" 
+                                ng-maxlength="20">
+                            <div ng-messages="forms.loginForm.password.$error" 
+                                ng-if="forms.loginForm.password.$dirty"
+                                class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="maxlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                                <div ng-message="minlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                            </div>
+                        </div>
+                        <button class="omr-button" 
+                            ng-disabled="forms.loginForm.$invalid"
+                            ng-click="doLogin()">
+                             {{ TRANSLATIONS.ENTER }}
+                        </button>
+                    </form>
+                </div>
+                <div class="text-center" style="margin-bottom: 4px;">
+                    {{ TRANSLATIONS.DONT_HAVE_ACCOUNT_CREATE_ONE }}
+                </div>
+                <div class="omr-account-modal__section--title">
+                    {{ TRANSLATIONS.CREATE_ACCOUNT | uppercase }}
+                </div>
+                <div class="omr-account-modal__form-register">
+                    <form name="forms.registerForm">
+                        <div>
+                            <label for="">{{TRANSLATIONS.NAME}}</label>
+                            <input type="text" name="name" class="form-input"
+                                ng-model="newAccount.name" 
+                                ng-required="true" 
+                                ng-maxlength="20" 
+                                ng-minlength="2">
+                            <div ng-messages="forms.registerForm.name.$error" 
+                                 ng-if="forms.registerForm.name.$dirty"
+                                  class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="maxlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_2_AND_20_CHARS}}</div>
+                                <div ng-message="minlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_2_AND_20_CHARS}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="">{{TRANSLATIONS.EMAIL}}</label>
+                            <input type="email" name="email" class="form-input" 
+                                ng-model="newAccount.email" 
+                                ng-required="true">
+                            <div ng-messages="forms.registerForm.email.$error" 
+                                ng-if="forms.registerForm.email.$dirty"
+                                class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="email">{{TRANSLATIONS.INVALID_EMAIL}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="">{{TRANSLATIONS.PASSWORD}}</label>
+                            <input type="password" name="password" class="form-input" 
+                                ng-model="newAccount.password" 
+                                ng-required="true" 
+                                ng-minlength="6" 
+                                ng-maxlength="20">
+                            <div ng-messages="forms.registerForm.password.$error" 
+                                ng-if="forms.registerForm.password.$dirty"
+                                class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="maxlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                                <div ng-message="minlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="">{{TRANSLATIONS.CONFIRM_PASSWORD}}</label>
+                            <input type="password" name="confirmPassword" class="form-input" 
+                                ng-model="newAccount.confirmPassword" 
+                                ng-required="true" 
+                                ng-minlength="6" 
+                                ng-maxlength="20">
+                            <div ng-messages="forms.registerForm.confirmPassword.$error" 
+                                ng-if="forms.registerForm.confirmPassword.$dirty"
+                                class="form-input-messages">
+                                <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
+                                <div ng-message="maxlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                                <div ng-message="minlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
+                                <div ng-message="confirmpass">{{TRANSLATIONS.THE_PASSWORD_NOT_MATCH}}</div>
+                            </div>
+                        </div>
+                        <button 
+                            class="omr-button" 
+                            ng-disabled="forms.registerForm.$invalid"
+                            ng-click="createAccount()">
+                            {{TRANSLATIONS.CREATE}}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
