@@ -17,6 +17,11 @@ function NetworkService($q, alertService, ENVIRONMENT, translationService) {
 
         if(!result) {
             showOfflineMessage();
+
+            return $q.reject({
+                resolved: true,
+                message: currentTranslation.NO_INTERNET_CONNECTION
+            });
         }
 
         return $q.resolve(result);

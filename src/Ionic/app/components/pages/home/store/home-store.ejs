@@ -39,9 +39,6 @@
                     </div>
                 </div>
                 <div class="omr-page-home__store__quests__quest__infos">
-                    <div class="omr-page-home__store__quests__quest__infos__item">
-                        <i class="fa fa-star-o" aria-hidden="true"></i> 100
-                    </div>
                 </div>
             </div>
             <ion-infinite-scroll on-infinite="$ctrl.nextPage()" distance="1%" icon="none" ng-if="!$ctrl.tabs.downloaded.noMoreDataToLoad">
@@ -65,7 +62,7 @@
                         <i class="fa fa-cloud-download" aria-hidden="true"></i>
                     </div>
                     <div class="omr-page-home__store__quests__quest__infos__item">
-                        <i class="fa fa-star-o" aria-hidden="true"></i> 100
+                        <i class="fa fa-star-o" aria-hidden="true"></i> {{ quest.likes }}
                     </div>
                 </div>
             </div>

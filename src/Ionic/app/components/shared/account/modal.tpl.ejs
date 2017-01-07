@@ -1,7 +1,26 @@
 <ion-modal-view>
     <omr-modal-header title="TRANSLATIONS.ACCOUNT" on-close="cancel()"></omr-modal-header>
 
-    <omr-modal-content>
+    <omr-modal-content ng-if="!!loggedUser">
+        <div class="omr-account-modal">
+            <div class="omr-account-modal__section">
+                <div class="omr-account-modal__section--title">
+                    {{ TRANSLATIONS.YOUR_ACCOUNT | uppercase }}
+                </div>
+                <div class="text-center omr-account-modal__section--name-email">
+                    {{loggedUser.name}} | {{loggedUser.email}}
+                </div>
+                <div class="omr-account-modal__section__logged__actions">
+                    <button class="omr-button" 
+                        ng-click="logout()">
+                            {{ TRANSLATIONS.LOGOUT }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </omr-modal-content>
+
+    <omr-modal-content ng-if="!loggedUser">
         <div class="omr-account-modal">
             <div class="omr-account-modal__section">
                 <div class="omr-account-modal__section--title">
@@ -25,15 +44,11 @@
                             <label for="">{{TRANSLATIONS.PASSWORD}}</label>
                             <input type="password" name="password" class="form-input" 
                                 ng-model="login.password" 
-                                ng-required="true" 
-                                ng-minlength="6" 
-                                ng-maxlength="20">
+                                ng-required="true">
                             <div ng-messages="forms.loginForm.password.$error" 
                                 ng-if="forms.loginForm.password.$dirty"
                                 class="form-input-messages">
                                 <div ng-message="required">{{TRANSLATIONS.THE_FIELD_IS_REQUIRED}}</div>
-                                <div ng-message="maxlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
-                                <div ng-message="minlength">{{TRANSLATIONS.THE_FIELD_BETWEEN_6_AND_20_CHARS}}</div>
                             </div>
                         </div>
                         <button class="omr-button" 

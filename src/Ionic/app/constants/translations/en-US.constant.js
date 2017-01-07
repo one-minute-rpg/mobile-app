@@ -64,5 +64,10 @@ angular.module('omr').constant('TRANSLATION_EN_US', {
     ACCOUNT_CREATE_SUCCESS: 'Account created',
     ERR_ACCOUNT_ALREADY_EXISTS: 'This account already exists.',
     ERR_INTERNAL: 'An unexpected error has occurred. Try again.',
-    ERR_LOGIN_INVALID: 'Invalid login'
+    ERR_LOGIN_INVALID: 'Invalid login',
+    YOUR_ACCOUNT: 'Your Account',
+    LOGOUT: 'Logout',
+    ERR_TOKEN_EXPIRED: 'Session expired.',
+    YOU_MUST_BE_LOGGED_TO_DO_THIS: 'You need to be logged to do this.',
+    LIKE: 'Like'
 });

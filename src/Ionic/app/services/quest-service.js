@@ -1,4 +1,4 @@
-function OmrQuestService($http, $q, $timeout, translationService, localStorageService) {
+function OmrQuestService($http, $q, $timeout, translationService, accountStorageService) {
     function _getSaveGameKey(questId) {
         return 'SAVE_GAME_QUEST_' + questId;
     }
@@ -9,7 +9,7 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
 
             try {
                 var keyFull = 'QUEST_FULL_' + questId;
-                var quest = localStorageService.getObject(keyFull);
+                var quest = accountStorageService.getObject(keyFull);
                 d.resolve(quest);
             } catch (error) {
                 d.reject(error);
@@ -21,7 +21,7 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
         saveGame: function(questId, character, currentSceneId) {
             var key = _getSaveGameKey(questId);
 
-            localStorageService.setObject(key, {
+            accountStorageService.setObject(key, {
                 questId: questId,
                 character: character,
                 currentSceneId: currentSceneId
@@ -30,14 +30,14 @@ function OmrQuestService($http, $q, $timeout, translationService, localStorageSe
 
         getSavedGame: function(questId) {
             var key = _getSaveGameKey(questId);
-            return localStorageService.getObject(key);
+            return accountStorageService.getObject(key);
         },
 
         removeSavedGame: function(questId) {
             var key = _getSaveGameKey(questId);
-            localStorageService.remove(key);
+            accountStorageService.remove(key);
         }
     }
 }
 
-angular.module('omr').factory('questService', ['$http', '$q', '$timeout', 'translationService', 'localStorageService', OmrQuestService]);
+angular.module('omr').factory('questService', ['$http', '$q', '$timeout', 'translationService', 'accountStorageService', OmrQuestService]);

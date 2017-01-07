@@ -1,11 +1,11 @@
-function OmrQuestStoreService($q, $http, $timeout, translationService, API, localStorageService) {
+function OmrQuestStoreService($q, $http, $timeout, translationService, API, accountStorageService, networkService) {
 
     function _storeQuest(quest) {
         var keyFull = 'QUEST_FULL_' + quest.quest_id;
-        localStorageService.setObject(keyFull, quest);
+        accountStorageService.setObject(keyFull, quest);
 
         var keyResume = 'QUEST_RESUME_' + quest.quest_id;
-        localStorageService.setObject(keyResume, {
+        accountStorageService.setObject(keyResume, {
             quest_id: quest.quest_id,
             title: quest.title,
             cover: quest.cover,
@@ -14,11 +14,11 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
     }
 
     function _getDownloadedResumeQuestKeys() {
-        var allKeys = localStorageService.getAllKeys();
+        var allKeys = accountStorageService.getAllKeys();
         var questResumeKeys = [];
 
         allKeys.forEach(function(k) {
-            if(k.indexOf('QUEST_RESUME_') === 0) {
+            if(k.indexOf('QUEST_RESUME_') >= 0) {
                 questResumeKeys.push(k);
             }
         });
@@ -26,10 +26,25 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
         return questResumeKeys;
     }
 
+
     return {
         search: function(term, page) {
-            return $http.get(API.URL + '/quest/search?q=' + term + '&page=' + page)
+            return networkService.requestOnline()
+                .then(function(isOnline) {
+                    if(isOnline) {
+                        return $http.get(API.URL + '/quest/search?q=' + term + '&page=' + page);
+                    }
+
+                    return null;
+                })
                 .then(function(response) {
+                    if(response === null) {
+                        return {
+                            quests: [],
+                            noMoreData: true
+                        }
+                    }
+
                     return {
                         quests: response.data.quests.map(function(q){
                             return {
@@ -37,7 +52,8 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
                                 title: q.title,
                                 language: q.language,
                                 cover: q.cover,
-                                description: q.description
+                                description: q.description,
+                                likes: q.likes
                             }
                         }),
                         noMoreData: response.data.noMoreData
@@ -46,9 +62,12 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
         },
         
         download: function(questId) {
-            return $http.get(API.URL + '/quest/download/' + questId)
+            return networkService.requestOnline()
+                .then(function() {
+                    return $http.get(API.URL + '/quest/download/' + questId)
+                })
                 .then(function(result) {
-                    _storeQuest(result.data.quest);
+                    return _storeQuest(result.data.quest);
                 })
                 .catch(function(err) {
                     throw err;
@@ -63,7 +82,7 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
                 var quests = [];
             
                 quests = resumeKeys.map(function(key) {
-                    return localStorageService.getObject(key);
+                    return accountStorageService.getObject(key);
                 });
 
                 d.resolve(quests);
@@ -80,9 +99,43 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, loca
                 var keyFull = 'QUEST_FULL_' + questId;
                 var keyResume = 'QUEST_RESUME_' + questId;
 
-                localStorageService.remove(keyFull);
-                localStorageService.remove(keyResume);
+                accountStorageService.remove(keyFull);
+                accountStorageService.remove(keyResume);
             })());
+        },
+
+        like: function(questId) {
+            var d = $q.defer();
+
+            networkService.requestOnline()
+                .then(function() {
+                    return  $http.post(API.URL + '/account-quest/like', {questId: questId});
+                })
+                .then(function(res) {
+                    var key = 'QUEST_LIKED_' + questId;
+                    var isLiked = !!accountStorageService.getBoolean(key, false);
+
+                    if(isLiked) {
+                        accountStorageService.remove(key);
+                    }
+                    else {
+                        accountStorageService.set(key, true);
+                    }
+                })
+                .then(function() {
+                    d.resolve(true);
+                })
+                .catch(function(err) {
+                    d.reject(err.data.code);
+                });
+
+            return d.promise;
+        },
+
+        isLiked: function(questId) {
+             var key = 'QUEST_LIKED_' + questId;
+             var isLiked = accountStorageService.getBoolean(key, false);
+             return isLiked;
         }
     }
 }
@@ -93,5 +146,6 @@ angular.module('omr').factory('questStoreService', [
     '$timeout', 
     'translationService',
     'API',
-    'localStorageService',
+    'accountStorageService',
+    'networkService',
      OmrQuestStoreService]);

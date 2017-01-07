@@ -29,6 +29,14 @@
                 }
             }
         }
+
+        &--name-email {
+            color: $color-dark-golden;
+        }
+
+        &__logged__actions {
+            padding: 30px;
+        }
     }
 
     input {

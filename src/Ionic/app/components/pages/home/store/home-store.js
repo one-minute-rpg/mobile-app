@@ -1,4 +1,4 @@
-function HomeStoreController($rootScope, $scope, translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService, $ionicModal, questService) {
+function HomeStoreController($rootScope, $scope, translationService, stateService, questStoreService, loaderService, $timeout, networkService, alertService, $ionicModal, questService, accountService) {
     var self = this;
     var currentListPage = -1;
 
@@ -88,12 +88,19 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
     self.download = _download;
     self.openOptions = _openOptions;
 
-    function _openOptions(quest) {
-        if ($scope.modal) {
+    function _reloadLikeState(quest) {
+        quest.__isLiked = questStoreService.isLiked(quest.quest_id);
+        quest.__likeIcon = quest.__isLiked ? 'fa-thumbs-up' : null
+    }
+
+    function _openOptions(quest, preserv) {
+        if ($scope.modal && !preserv) {
             $scope.modal.remove();
         };
 
         var hasSaveGame = !!questService.getSavedGame(quest.quest_id);
+        _reloadLikeState(quest);
+
         var downloadedOptions = [];
 
         var playQuest = function() {
@@ -126,6 +133,13 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
                         playQuest();
                     },
                     hide: !hasSaveGame
+                },
+                {
+                    text: self.TRANSLATIONS.LIKE,
+                    onSelect: function() {
+                        _like(quest);
+                    },
+                    icon: quest.__likeIcon
                 }
             ]);
         }
@@ -170,6 +184,8 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
             options: options[self.selectedTab]
         };
 
+        if(preserv) return;
+        
         $ionicModal.fromTemplateUrl('components/pages/home/store/quest-options/quest-options.html', {
             scope: $scope,
             animation: 'slide-in-right'
@@ -184,6 +200,7 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
             .then(function (quests) {
                 quests.forEach(function(q) {
                     q.downloaded = true;
+                    _reloadLikeState(q);
                 });
 
                 self.downloadedQuests = quests;
@@ -207,6 +224,7 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
             })
             .catch(function (err) {
                 loaderService.hide();
+                alertService.alert('Ops =(', translationService.getLocalizedText(err.data.code));
             });
     }
 
@@ -265,6 +283,28 @@ function HomeStoreController($rootScope, $scope, translationService, stateServic
         stateService.goToPlay(quest.quest_id);
     }
 
+    function _like(quest) {
+        accountService.getLoggedUser()
+            .then(function(loggedUser) {
+                if(!loggedUser) {
+                    alertService.alert('Ops =(', self.TRANSLATIONS.YOU_MUST_BE_LOGGED_TO_DO_THIS);
+                    return false;
+                }
+                else {
+                    return questStoreService.like(quest.quest_id);
+                }
+            })
+            .then(function(res) {
+                if(res) {
+                    _reloadLikeState(quest);
+                    _openOptions(quest, true);
+                }
+            })
+            .catch(function(err){
+                alertService.alert('Ops =(', self.TRANSLATIONS.ERR_INTERNAL);
+            });
+    }
+
     function _init() {
         self.TRANSLATIONS = translationService.getCurrentTranslations();
         self.tabs.downloaded.search();
@@ -285,5 +325,6 @@ angular.module('omr').component('homeStore', {
         'alertService',
         '$ionicModal',
         'questService',
+        'accountService',
         HomeStoreController]
 });

@@ -28,6 +28,12 @@
         
         .item {
             border-color: $color-dark-golden;
+
+            i {
+                position: absolute;
+                top: 18px;
+                left: 20px;
+            }
         }
     }
 }

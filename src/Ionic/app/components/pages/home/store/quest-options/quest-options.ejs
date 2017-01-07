@@ -17,6 +17,7 @@
                 <ion-item ng-repeat="option in questOptionsModal.options"
                           ng-click="option.onSelect()"
                           ng-if="!option.hide">
+                    <i class="fa {{option.icon}}" aria-hidden="true" ng-if="!!option.icon"></i>
                     {{option.text}}
                 </ion-item>
             </ion-list>
