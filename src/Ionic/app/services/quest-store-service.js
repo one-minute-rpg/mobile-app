@@ -9,7 +9,8 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, acco
             quest_id: quest.quest_id,
             title: quest.title,
             cover: quest.cover,
-            description: quest.description
+            description: quest.description,
+            version: quest.version
         });
     }
 
@@ -136,6 +137,23 @@ function OmrQuestStoreService($q, $http, $timeout, translationService, API, acco
              var key = 'QUEST_LIKED_' + questId;
              var isLiked = accountStorageService.getBoolean(key, false);
              return isLiked;
+        },
+
+        checkForUpdates: function(questId) {
+            var self = this;
+
+            networkService.requestOnline({ silent: true })
+                .then(function() {
+                    return $http.get(API.URL + '/quest/resume/' + questId);
+                })
+                .then(function(res){
+                    var questResume = res.data;
+                    var savedResume = accountStorageService.getObject('QUEST_RESUME_' + questId);
+
+                    if(savedResume.version < questResume.version) {
+                        return self.download(questId);
+                    };
+                });
         }
     }
 }

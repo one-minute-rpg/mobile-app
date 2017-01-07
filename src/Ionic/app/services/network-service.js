@@ -1,5 +1,11 @@
 function NetworkService($q, alertService, ENVIRONMENT, translationService) {
-    function requestOnline() {
+    function requestOnline(params) {
+        var options = {
+            silent: false
+        };
+
+        options = angular.extend(options, params);
+
         var result = true;
 
         if (ENVIRONMENT.RUNNING_ON_CORDOVA) {
@@ -16,8 +22,10 @@ function NetworkService($q, alertService, ENVIRONMENT, translationService) {
         }
 
         if(!result) {
-            showOfflineMessage();
-
+            if(!options.silent) {
+                showOfflineMessage();
+            }
+            
             return $q.reject({
                 resolved: true,
                 message: currentTranslation.NO_INTERNET_CONNECTION
